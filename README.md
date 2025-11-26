@@ -1,20 +1,37 @@
-# PyAS - Python Algebra System
+# 🧮 Python Algebra System (PyAS)
 
-A lightweight symbolic algebra system built with [SymPy](https://www.sympy.org/).
+**PyAS** is a modular Python-based algebra and calculus toolkit built on top of [SymPy](https://www.sympy.org/).  
+It provides a user-friendly interface for solving equations, performing calculus operations, and evaluating mathematical functions—perfect for students, educators, and developers.
 
-## Features
+---
 
-- Solve equations with one or two unknowns
+## 📦 Features
 
-## Files
+- **Algebra**: Solve equations, factor polynomials, find GCD/LCM, work with complex numbers, and more.  
+- **Calculus**: Compute derivatives, integrals, limits, series expansions, and curve analysis.  
+- **Functions**: Evaluate trigonometric, hyperbolic, logarithmic, exponential, and special functions.  
+- **Systems**: Solve systems of equations and ordinary differential equations.  
+- **Interactive Menus**: Easy-to-navigate CLI menus for each module.
 
-| File | Description |
-|------|-------------|
-| `Python Algebra System.py` | Main solver for 1 or 2 unknowns |
+---
 
-## Usage
+## 🧪 Modules
 
-Run any file and select from the menu:
+| Module | Description |
+|--------|-------------|
+| `PyAS.py` | Basic equation solving (1 or 2 unknowns) |
+| `PyAS [ALGEBRA].py` | Algebraic operations: factor, expand, solve, mod, primes, etc. |
+| `PyAS [CALCULUS].py` | Calculus toolkit: derivatives, integrals, limits, series, curve analysis |
+| `PyAS [MATHEMATICAL FUNCTIONS].py` | Evaluate mathematical functions: trig, log, gamma, erf, etc. |
 
+---
+
+## 🛠️ Installation
+
+### Prerequisites
+- Python 3.7+
+- `sympy` library
+
+### Install SymPy
 ```bash
-python "Python Algebra System.py"
+pip install sympy
