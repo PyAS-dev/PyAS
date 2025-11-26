@@ -1,11 +1,11 @@
-# 🧮 Python Algebra System (PyAS)
+# Python Algebra System (PyAS)
 
 **PyAS** is a modular Python-based algebra and calculus toolkit built on top of [SymPy](https://www.sympy.org/).  
 It provides a user-friendly interface for solving equations, performing calculus operations, and evaluating mathematical functions—perfect for students, educators, and developers.
 
 ---
 
-## 📦 Features
+## Features
 
 - **Algebra**: Solve equations, factor polynomials, find GCD/LCM, work with complex numbers, and more.  
 - **Calculus**: Compute derivatives, integrals, limits, series expansions, and curve analysis.  
@@ -15,7 +15,7 @@ It provides a user-friendly interface for solving equations, performing calculus
 
 ---
 
-## 🧪 Modules
+## Modules
 
 | Module | Description |
 |--------|-------------|
@@ -26,7 +26,7 @@ It provides a user-friendly interface for solving equations, performing calculus
 
 ---
 
-## 🛠️ Installation
+## Installation
 
 ### Prerequisites
 - Python 3.7+
