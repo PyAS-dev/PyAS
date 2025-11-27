@@ -7,10 +7,10 @@ It provides a user-friendly interface for solving equations, performing calculus
 
 ## Features
 
-- **Algebra**: Solve equations, factor polynomials, find GCD/LCM, work with complex numbers, and more.  
+- **Algebra**: Solve equations, factor polynomials, find gcd/lcm, work with complex numbers, and more.  
 - **Calculus**: Compute derivatives, integrals, limits, series expansions, and curve analysis.  
 - **Functions**: Evaluate trigonometric, hyperbolic, logarithmic, exponential, and special functions.  
-- **Systems**: Solve systems of equations and ordinary differential equations.  
+- **Systems**: Solve systems of equations and ODEs.  
 - **Interactive Menus**: Easy-to-navigate CLI menus for each module.
 
 ---
@@ -20,9 +20,9 @@ It provides a user-friendly interface for solving equations, performing calculus
 | Module | Description |
 |--------|-------------|
 | `PyAS.py` | Basic equation solving (1 or 2 unknowns) |
-| `PyAS [ALGEBRA].py` | Algebraic operations: factor, expand, solve, mod, primes, etc. |
+| `PyAS [ALGEBRA].py` | Algebraic operations: factor, expand, solve, modular arithmatic, primes, etc. |
 | `PyAS [CALCULUS].py` | Calculus toolkit: derivatives, integrals, limits, series, curve analysis |
-| `PyAS [MATHEMATICAL FUNCTIONS].py` | Evaluate mathematical functions: trig, log, gamma, erf, etc. |
+| `PyAS [MATHEMATICAL FUNCTIONS].py` | Evaluate mathematical functions: trigonometric, logarithms, gamma functions, error function, etc. |
 
 ---
 
