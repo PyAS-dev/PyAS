@@ -1,4 +1,4 @@
-# Python Algebra System [CALCULUS]
+ Python Algebra System [CALCULUS]
 import sympy as sp
 
 class PyAS_Calculus:
@@ -102,13 +102,45 @@ class PyAS_Calculus:
         print("Degree:", sp.degree(P, self.x))
 
     def denominator(self):
-        Q = self.parse_input_expr("Q(x) = ")
-        print("Denominator:", sp.simplify(Q))
+        f = self.parse_input_expr("f(x) = ")
+        denom = sp.fraction(f)[1]
+        print("Denominator:", sp.simplify(denom))
 
     def derivative(self):
-        f = self.parse_input_expr("f(x) = ")
-        n = int(input("Order n = "))
-        print(f"Derivative order {n}:", sp.diff(f, self.x, n))
+        choice = input("Derivative type: single-variable (s), partial (p), parametric (c)? ").strip().lower()
+
+        if choice == 's':  # Single-variable
+            f = self.parse_input_expr("f(x) = ")
+            n = int(input("Order n = "))
+            deriv = sp.diff(f, self.x, n)
+            print(f"{n}-th derivative:", sp.simplify(deriv))
+
+        elif choice == 'p':  # Partial derivative
+            f = self.parse_input_expr("f(x,y,...) = ")
+            vars_in_f = list(f.free_symbols)
+            print("Variables detected:", vars_in_f)
+            var_choice = input(f"Differentiate w.r.t which variable? (default {vars_in_f[0]}) ").strip()
+            var = sp.symbols(var_choice) if var_choice else vars_in_f[0]
+            n = int(input("Order n = "))
+            deriv = sp.diff(f, var, n)
+            print(f"{n}-th partial derivative w.r.t {var}:", sp.simplify(deriv))
+
+        elif choice == 'c':  # Parametric curve
+            x_t = self.parse_input_expr("x(t) = ")
+            y_t = self.parse_input_expr("y(t) = ")
+            t = self.t
+            n = int(input("Order n = "))
+        
+        # First derivative dy/dx
+            dy_dx = sp.diff(y_t, t) / sp.diff(x_t, t)
+            deriv = dy_dx
+        # Higher-order derivatives using chain rule recursively
+            for _ in range(1, n):
+                deriv = sp.diff(deriv, t) / sp.diff(x_t, t)
+            print(f"{n}-th derivative of parametric curve dy/dx:", sp.simplify(deriv))
+
+        else:
+            print("Invalid choice.")
 
     def factors(self):
         choice = input("Polynomial or Integer? p/i: ").strip().lower()
@@ -132,8 +164,28 @@ class PyAS_Calculus:
         print("Inflection points:", points)
 
     def integral(self):
-        f = self.parse_input_expr("f(x) = ")
-        print("Indefinite integral:", sp.integrate(f, self.x))
+         f = self.parse_input_expr("f(x, y, ...) = ")
+        vars_in_f = list(f.free_symbols)
+        print("Variables detected:", vars_in_f)
+
+        var_choice = input(f"Integrate w.r.t which variable? (default {vars_in_f[0]}): ").strip()
+        var = sp.symbols(var_choice) if var_choice else vars_in_f[0]
+
+        definite = input("Definite integral? (y/n): ").strip().lower()
+        if definite == 'y':
+            a = self.parse_input_expr("Lower limit a = ")
+            b = self.parse_input_expr("Upper limit b = ")
+            integral_result = sp.integrate(f, (var, a, b))
+        else:
+            integral_result = sp.integrate(f, var)
+
+        integral_simplified = sp.simplify(integral_result)
+        print("Integral result:", integral_simplified)
+
+    # Optional numeric evaluation
+        numeric_eval = input("Evaluate numerically? (y/n): ").strip().lower()
+        if numeric_eval == 'y':
+            print("Numeric value:", sp.N(integral_simplified))
 
     def integral_between(self):
         f = self.parse_input_expr("f(x) = ")
