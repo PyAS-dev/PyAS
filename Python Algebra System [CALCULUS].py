@@ -1,4 +1,4 @@
- Python Algebra System [CALCULUS]
+# Python Algebra System [CALCULUS]
 import sympy as sp
 
 class PyAS_Calculus:
@@ -164,7 +164,7 @@ class PyAS_Calculus:
         print("Inflection points:", points)
 
     def integral(self):
-         f = self.parse_input_expr("f(x, y, ...) = ")
+        f = self.parse_input_expr("f(x, y, ...) = ")
         vars_in_f = list(f.free_symbols)
         print("Variables detected:", vars_in_f)
 
@@ -328,7 +328,8 @@ class PyAS_Calculus:
         x_t = self.parse_input_expr("x(t) = ")
         y_t = self.parse_input_expr("y(t) = ")
         P = self.parse_input_list("Enter point P (x,y): ")
-        t_start, t_end = 0, 2*sp.pi
+        t_start = self.parse_input_expr("t_start = ")
+        t_end = self.parse_input_expr("t_end = ")
         sol = sp.solve([x_t - P[0], y_t - P[1]], self.t)
         t0 = next((s for s in sol if t_start <= s <= t_end), None)
         if t0 is None:
