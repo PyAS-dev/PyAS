@@ -418,7 +418,7 @@ class PyAS_Calculus:
         lhs = self.parse_input_expr("LHS = ")
         rhs = self.parse_input_expr("RHS = ")
         ode = sp.Eq(lhs, rhs)
-        print("ODE solution:", sp.solve(ode))
+        print("ODE solution:", sp.dsolve(ode))
 
     def spline(self):
         n = int(input("Number of points: "))
@@ -582,3 +582,4 @@ class PyAS_Calculus:
 if __name__ == "__main__":
     calculus = PyAS_Calculus()
     calculus.run()
+
