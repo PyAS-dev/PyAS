@@ -464,7 +464,7 @@ class PyAS_Calculus:
 
     def trig_expand(self):
         expr = self.parse_input_expr("f = ")
-        print("Trig expanded:", sp.trig_expand(expr))
+        print("Trig expanded:", sp.expand_trig(expr))
 
     def trig_simplify(self):
         expr = self.parse_input_expr("f = ")
@@ -582,4 +582,3 @@ class PyAS_Calculus:
 if __name__ == "__main__":
     calculus = PyAS_Calculus()
     calculus.run()
-
