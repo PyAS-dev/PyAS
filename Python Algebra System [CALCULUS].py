@@ -14,6 +14,7 @@ class PyAS_Calculus:
 
     def __init__(self):
         self.x, self.y, self.z, self.t = sp.symbols('x y z t')
+        self.x = sp.function('y')
 
     # ========================= Calculus Functions =========================
     def asymptote(self):
