@@ -3,377 +3,225 @@
 import sympy as sp
 from random import uniform
 
-# === INPUT AND OUTPUT HELPERS ===
-
-def get_input(prompt):
-    """Safely parse numeric or symbolic user input into a SymPy object"""
-    while True:
-        try:
-            expr_str = input(prompt).strip()
-            if expr_str == "":
-                print("Empty input not allowed.")
-                continue
-            expr = sp.sympify(expr_str)
-            return expr
-        except (sp.SympifyError, SyntaxError, TypeError):
-            print("Invalid input. Please try again.")
-
-def show(expr):
-    """Display symbolic result and optionally numeric evaluation"""
-    if expr is None:
-        return
-    expr_simplified = sp.simplify(expr)
-    print(f"Symbolic: {expr_simplified}")
-    try:
-        val = expr_simplified.evalf()
-        if val != expr_simplified:
-            print(f"Numeric:  {val}")
-    except Exception:
-        pass
-
 # === BASIC FUNCTIONS ===
 
-def random_func():
-    print(f"Random: {uniform(0,1)}")
+def random(x):
+    return uniform(0, 1)
 
-def sqrt():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.sqrt(x))
+def sqrt(x):
+    return x**sp.Rational(1, 2)
 
-def cbrt():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.real_root(x, 3))
+def cbrt(x):
+    return x**sp.Rational(1, 3)
 
-def nroot():
-    x = get_input("x = ")
-    n = get_input("n = ")
-    if None not in (x, n):
-        show(x ** sp.Rational(1, n))
+def nroot(x, n):
+    return x**sp.Rational(1, n)
 
-def absolute_value():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.Abs(x))
+def absolute_value(x):
+    if x >= 0:
+        return x
+    else:
+        return -x
 
-def sgn():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.sign(x))
+def sgn(x):
+    if x > 0:
+        return 1
+    elif x == 0:
+        return 0
+    else:
+        return -1
 
-def arg():
-    z = get_input("z = ")
-    if z is not None:
-        show(sp.arg(z))
+def arg(z):
+    return sp.arg(z)
 
-def conjugate():
-    z = get_input("z = ")
-    if z is not None:
-        show(sp.conjugate(z))
+def conjugate(z):
+    return sp.conjugate(z)
 
-def real():
-    z = get_input("z = ")
-    if z is not None:
-        show(sp.re(z))
+def real(z):
+    return sp.re(z)
 
-def imaginary():
-    z = get_input("z = ")
-    if z is not None:
-        show(sp.im(z))
+def imaginary(z):
+    return sp.im(z)
 
-def floor():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.floor(x))
+def floor(x):
+    return sp.floor(x)
 
-def ceil():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.ceiling(x))
+def ceil(x):
+    return sp.ceiling(x)
 
-def nearest_integer():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.round(x))
+def nearest_integer(x):
+    return floor(x + sp.Rational(1, 2))
 
-def fractional_part():
-    x = get_input("x = ")
-    if x is not None:
-        show(x - sp.floor(x))
+def fractional_part(x):
+    return x - floor(x)
 
 # === LOGARITHMIC AND EXPONENTIAL ===
 
-def log_func():
-    x = get_input("x = ")
-    b = get_input("b = ")
-    if None not in (x, b):
-        show(sp.log(x, b))
+def log(x, b):
+    return sp.log(x, b)
 
-def exp_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.exp(x))
+def exp(x):
+    return sp.exp(x)
 
-def ln():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.log(x))
+def ln(x):
+    return sp.log(x)
 
-def log10():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.log(x, 10))
+def log10(x):
+    return sp.log(x, 10)
 
-def log2():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.log(x, 2))
+def log2(x):
+    return sp.log(x, 2)
 
 # === TRIGONOMETRIC FUNCTIONS ===
 
-def sin_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.sin(x))
+def sin(x):
+    return sp.sin(x)
 
-def cos_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.cos(x))
+def cos(x):
+    return sp.cos(x)
 
-def tan_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.tan(x))
+def tan(x):
+    return sin(x)/cos(x)
 
-def sec_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.sec(x))
+def sec(x):
+    return 1/cos(x)
 
-def csc_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.csc(x))
+def csc(x):
+    return 1/sin(x)
 
-def cot_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.cot(x))
+def cot(x):
+    return cos(x)/sin(x)
 
-def asin_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.asin(x))
+def asin(x):
+    return sp.asin(x)
 
-def acos_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.acos(x))
+def acos(x):
+    return sp.acos(x)
 
-def atan_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.atan(x))
+def atan(x):
+    return sp.atan(x)
 
-def atan2_func():
-    y = get_input("y = ")
-    x = get_input("x = ")
-    if None not in (x, y):
-        show(sp.atan2(y, x))
+def atan2(y, x):
+    if x > 0:
+        return atan(y/x)
+    elif x < 0 and y >= 0:
+        return atan(y/x) + sp.pi
+    elif x < 0 and y < 0:
+        return atan(y/x) - sp.pi
+    elif x == 0 and y > 0:
+        return sp.pi/2
+    elif x == 0 and y < 0:
+        return -sp.pi/2
+    else:
+        return undefined
 
 # === HYPERBOLIC FUNCTIONS ===
 
-def sinh_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.sinh(x))
+def sinh(x):
+    return (exp(x) - exp(-x))/2
 
-def cosh_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.cosh(x))
+def cosh(x):
+    return (exp(x) + exp(-x))/2
+    
+def tanh(x):
+    return sinh(x)/cosh(x)
 
-def tanh_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.tanh(x))
+def sech(x):
+    return 1/cosh(x)
 
-def sech_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.sech(x))
+def csch(x):
+    return 1/sinh(x)
 
-def csch_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.csch(x))
+def coth(x):
+    return cosh(x)/sinh(x)
 
-def coth_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.coth(x))
+def asinh(x):
+    return ln(x + sqrt(x**2 + 1))
 
-def asinh_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.asinh(x))
+def acosh(x):
+    return ln(x - sqrt(x**2 - 1))
 
-def acosh_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.acosh(x))
-
-def atanh_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.atanh(x))
+def atanh(x):
+    return 1/2 * ln((1 + x)/(1 - x))
 
 # === SPECIAL FUNCTIONS ===
 
-def gamma_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.gamma(x))
+def gamma(x):
+    t = sp.symbols('t')
+    return sp.integrate(t**(x - 1) * exp(-t), (t, 0, sp.oo))
 
-def lower_incomplete_gamma():
-    x = get_input("x = ")
-    a = get_input("a = ")
-    if None not in (x, a):
-        t = sp.symbols('t', real=True, positive=True)
-        expr = sp.integrate(t**(a-1)*sp.exp(-t), (t, 0, x))
-        show(expr)
+def lower_incomplete_gamma(a, x):
+    t = sp.symbols('t')
+    return sp.integrate(t**(a - 1) * exp(-t), (t, 0, x))
 
-def gamma_regularized():
-    x = get_input("x = ")
-    a = get_input("a = ")
-    if None not in (x, a):
-        t = sp.symbols('t', real=True, positive=True)
-        expr = sp.integrate(t**(a-1)*sp.exp(-t), (t, 0, x)) / sp.gamma(a)
-        show(expr)
+def gamma_regularized(a, x):
+    t = sp.symbols('t')
+    a = sp.sympify(a)
+    x = sp.sympify(x)
+    return lower_incomplete_gamma(a, x)/gamma(a)
 
-def psi_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.digamma(x))
+def psi(x):
+    return sp.digamma(x)
 
-def beta_func():
-    a = get_input("a = ")
-    b = get_input("b = ")
-    if None not in (a, b):
-        show(sp.beta(a, b))
+def beta(a, b):
+    return (gamma(a)*gamma(b))/gamma(a + b)
 
-def incomplete_beta_func():
-    a = get_input("a = ")
-    b = get_input("b = ")
-    x = get_input("x = ")
-    if None not in (a, b, x):
-        show(sp.betainc(a, b, 0, x) * sp.beta(a, b))
+def incomplete_beta(a, b, x):
+    t = sp.symbols('t')
+    a = sp.sympify(a)
+    b = sp.sympify(b)
+    return sp.integrate(t**(a - 1) * (1 - t)**(b - 1), (t, 0, x))
 
-def beta_regularized_func():
-    a = get_input("a = ")
-    b = get_input("b = ")
-    x = get_input("x = ")
-    if None not in (a, b, x):
-        show(sp.betainc(a, b, 0, x))
+def beta_regularized(a, b, x):
+    t = sp.symbols('t')
+    return incomplete_beta(a, b, x)/beta(a, b)
 
-def erf_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.erf(x))
+def erf(x):
+    t = sp.symbols('t')
+    return 2/sqrt(x) * sp.integrate(exp(-t**2), (t, 0, x))
 
-def nPr_func():
-    n = get_input("n = ")
-    r = get_input("r = ")
-    if None not in (n, r):
-        if not (n.is_integer and r.is_integer):
-            print("n and r must be integers.")
-            return
-        show(sp.factorial(n) / sp.factorial(n - r))
+def nPr(n, r):
+    return sp.factorial(n)/sp.factorial(n - r)
 
-def nCr_func():
-    n = get_input("n = ")
-    r = get_input("r = ")
-    if None not in (n, r):
-        if not (n.is_integer and r.is_integer):
-            print("n and r must be integers.")
-            return
-        show(sp.binomial(n, r))
+def nCr(n, r):
+    return sp.factorial(n)/(sp.factorial(r)*sp.factorial(n - r))
 
-def sin_integral_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.Si(x))
+def sin_integral(x):
+    t = sp.symbols('t')
+    return sp.integrate(sin(t)/t, (t, 0, x))
 
-def cos_integral_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.Ci(x))
+def cos_integral(x):
+    t = sp.symbols('t')
+    return -sp.integrate(cos(t)/t, (t, x, sp.oo))
 
-def exp_integral_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.Ei(x))
+def exp_integral(x):
+    t = sp.symbols('t')
+    return sp.integrate(exp(t)/t, (t, -sp.oo, x))
 
-def zeta_func():
-    s = get_input("s = ")
-    if s is not None:
-        show(sp.zeta(s))
+def zeta(s):
+    s = sp.sympify(s)
+    n = sp.symbols('n', integer=True, positive=True)
+    return sp.summation(1/n**s, (n, 1, sp.oo))
 
-def dirac_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.DiracDelta(x))
+def dirac(x):
+    return sp.DiracDelta(x)
 
-def heaviside_func():
-    x = get_input("x = ")
-    if x is not None:
-        show(sp.Heaviside(x))
+def heaviside(x):
+    if x < 0:
+        return 0
+    else:
+        return 1
 
 # === MENU SETUP ===
 
-menu = [
-    '01 - random', '02 - sqrt', '03 - cbrt', '04 - nroot', '05 - absolute_value', '06 - sgn',
-    '07 - arg', '08 - conjugate', '09 - real', '10 - imaginary', '11 - floor', '12 - ceil', '13 - nearest_integer',
-    '14 - fractional_part', '15 - log', '16 - exp', '17 - ln', '18 - log10', '19 - log2', '20 - sin',
-    '21 - cos', '22 - tan', '23 - sec', '24 - csc', '25 - cot', '26 - asin', '27 - acos', '28 - atan',
-    '29 - atan2', '30 - sinh', '31 - cosh', '32 - tanh', '33 - sech', '34 - csch', '35 - coth', '36 - asinh',
-    '37 - acosh', '38 - atanh', '39 - gamma', '40 - lower_incomplete_gamma', '41 - gamma_regularized',
-    '42 - psi', '43 - beta', '44 - incomplete_beta', '45 - beta_regularized', '46 - erf', '47 - nPr',
-    '48 - nCr', '49 - sin_integral', '50 - cos_integral', '51 - exp_integral', '52 - zeta', '53 - dirac',
-    '54 - heaviside'
-]
-
-funcs = [
-    random_func, sqrt, cbrt, nroot, absolute_value, sgn, arg,
-    conjugate, real, imaginary, floor, ceil, nearest_integer,
-    fractional_part, log_func, exp_func, ln, log10, log2, sin_func, cos_func,
-    tan_func, sec_func, csc_func, cot_func, asin_func, acos_func, atan_func, atan2_func, sinh_func,
-    cosh_func, tanh_func, sech_func, csch_func, coth_func, asinh_func, acosh_func, atanh_func,
-    gamma_func, lower_incomplete_gamma, gamma_regularized, psi_func, beta_func,
-    incomplete_beta_func, beta_regularized_func, erf_func, nPr_func, nCr_func, sin_integral_func,
-    cos_integral_func, exp_integral_func, zeta_func, dirac_func, heaviside_func
-]
-
-# === MAIN LOOP ===
-
-def main():
-    while True:
-        print("\n=== PyMath Menu ===")
-        for i, item in enumerate(menu, start=0):
-            print(f"{item:35}", end="")
-            if (i + 1) % 3 == 0:
-                print()
-        print("\n00 - Exit")
-        choice = input("Select option: ").strip()
-        if choice == "0" or choice.lower() == "00":
-            print("Exiting PyAs...")
-            break
-        elif choice.isdigit() and 1 <= int(choice) <= len(funcs):
-            funcs[int(choice) - 1]()
-        else:
-            print(f"Invalid option. Enter a number between 0 and {len(funcs)}.")
-
-if __name__ == "__main__":
-    main()
+FUNCTIONS = {
+    'random': random, 'sqrt': sqrt, 'cbrt': cbrt, 'nroot': nroot, 'absolute_value': absolute_value, 'sgn': sgn, 'arg': arg,
+    'conjugate': conjugate, 'real': real, 'imaginary': imaginary, 'floor': floor, 'ceil': ceil, 'nearest_integer': nearest_integer,
+    'fractional_part':fractional_part, 'log': log, 'exp': exp, 'ln': ln, 'log10': log10, 'log2': log2, 'sin': sin, 'cos': cos,
+    'tan': tan, 'sec': sec, 'csc': csc, 'cot': cot, 'asin': asin, 'acos': acos, 'atan':atan, 'atan2': atan2, 'sinh': sinh,
+    'cosh': cosh, 'tanh': tanh, 'sech': sech, 'csch': csch, 'coth': coth, 'asinh': asinh, 'acosh': acosh, 'atanh': atanh,
+    'gamma': gamma, 'lower_incomplete_gamma': lower_incomplete_gamma, 'gamma_regularized': gamma_regularized, 'psi': psi,
+    'beta': beta, 'incomplete_beta': incomplete_beta, 'beta_regularized': beta_regularized, 'erf': erf, 'nPr': nPr, 'nCr': nCr,
+    'sin_integral': sin_integral, 'cos_integral': cos_integral, 'exp_integral': exp_integral, 'zeta': zeta, 'dirac': dirac,
+    'heaviside': heaviside
+}
