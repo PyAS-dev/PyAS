@@ -3,6 +3,7 @@
 import sympy as sp
 from sympy.polys import factor
 from sympy import QQ
+import pyas_math
 
 x, y = sp.symbols('x y')
 
@@ -24,16 +25,16 @@ def vector_cross_product(u, v):
     v = sp.Matrix(v)
     return u.cross(v)
 
-def imaginary_solutions(l, r):
+def complex_solutions(l, r):
     """Solve a single complex equation l = r"""
-    eq = sp.Eq(l, r)
-    return sp.solve(eq, x)
+    equation = sp.Eq(l, r)
+    return sp.solve(equation, x)
 
-def imaginary_solutions_system(l1, r1, l2, r2):
+def complex_solutions_system(left1, right1, left2, right2):
     """Solve a system of complex equations"""
-    eq1 = sp.Eq(l1, r1)
-    eq2 = sp.Eq(l2, r2)
-    return sp.solve((eq1, eq2), (x, y))
+    equation1 = sp.Eq(left1, right1)
+    equation2 = sp.Eq(left2, right2)
+    return sp.solve((equation1, equation2), (x, y))
 
 def division_integer(a, b):
     """Integer division"""
@@ -64,23 +65,27 @@ def expand(expr):
 def factorise(expr):
     return sp.factor(expr)
 
-def from_base(n_str, base):
-    return int(n_str, base)
+def from_base(n_string, base):
+    return int(n_string, base)
 
 def gcd(*nums):
     return sp.gcd(list(nums))
 
-def irrational_factor(expr):
-    return factor(expr, extension=QQ.algebraic_field())
+def irrational_factor(expression):
+    return "Did you really think factoring is simple? \n"
+    "https://en.wikipedia.org/wiki/Field_extension"
 
-def is_factored(expr):
-    return expr == sp.factor(expr)
+def is_factored(expression):
+    if expression == sp.factor(expression):
+        return True
+    else:
+        return False
 
 def is_prime(n):
     return sp.isprime(n)
 
 def lcm(*nums):
-    return sp.lcm(list(nums))
+    return pyas_math.absolute_value(*nums)/gcd(*nums)
 
 def maximum(*nums):
     return max(nums)
@@ -97,11 +102,11 @@ def mod_polynomial(P, Q):
 def next_prime(n):
     return sp.nextprime(n)
 
-def n_solutions(eq_l, eq_r, start=None):
-    eq = sp.Eq(eq_l, eq_r)
+def n_solutions(left, right, start=None):
+    equation = sp.Eq(left, right)
     if start is not None:
-        return sp.nsolve(eq, x, start)
-    return sp.nsolve(eq, x)
+        return sp.nsolve(equation, x, start)
+    return sp.nsolve(equation, x)
 
 def previous_prime(n):
     return sp.prevprime(n)
@@ -112,27 +117,27 @@ def prime_factors(n):
 def simplify(expr):
     return sp.simplify(expr)
 
-def solve_equation(l, r):
-    eq = sp.Eq(l, r)
-    return sp.solve(eq)
+def solve_equation(left, right):
+    equation = sp.Eq(left, right)
+    return sp.solve(equation)
 
-def solve_inequality(expr):
-    return sp.solve_univariate_inequality(expr, x)
+def solve_inequality(expression):
+    return sp.solve_univariate_inequality(expression, x)
 
 def to_base(n, base):
     digits = []
-    num = n
-    while num > 0:
-        digits.append(num % base)
-        num //= base
+    number = n
+    while number > 0:
+        digits.append(number % base)
+        number //= base
     return digits[::-1] if digits else [0]
 
 # === MENU SETUP ===
 
 FUNCTIONS = {
     "common_denominator": common_denominator, "complete_square": complete_square,
-    "vector_cross_product": vector_cross_product, "imaginary_solutions": imaginary_solutions,
-    "imaginary_solutions_system": imaginary_solutions_system, "division_integer": division_integer,
+    "vector_cross_product": vector_cross_product, "complex_solutions": complex_solutions,
+    "complex_solutions_system": complex_solutions_system, "division_integer": division_integer,
     "division_polynomial": division_polynomial, "divisors_count": divisors_count,
     "divisors_list": divisors_list, "sigma": sigma, "vector_dot_product": vector_dot_product,
     "expand": expand, "factorise": factorise, "from_base": from_base, "gcd": gcd,
