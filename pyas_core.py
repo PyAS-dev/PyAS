@@ -53,7 +53,7 @@ def parse_call(expression: str):
     if "(" not in expression or not expression.endswith(")"):
         raise ValueError("Invalid syntax. Use f(arguments)")
 
-    function_name, argument_string = expr.split("(", 1)
+    function_name, argument_string = expression.split("(", 1)
     function_name = function_name.strip()
     argument_string = argument_string[:-1]
 
@@ -63,7 +63,7 @@ def parse_call(expression: str):
     arguments = []
     for a in split_arguments(argument_string):
         try:
-            value = ast.literal_evalue(a)  # parse Python literals
+            value = ast.literal_eval(a)  # parse Python literals
         except:
             value = parse_expr(a)        # fallback: SymPy expressions
         arguments.append(value)
