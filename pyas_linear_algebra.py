@@ -1,7 +1,7 @@
 #Python Algebra System [LINEAR ALGEBRA]
 
 import sympy as sp
-from sympy import sqrt, Eq, solve
+import pyas_math
 
 # ======== Functions ========
 
@@ -12,8 +12,8 @@ def apply_matrix(M, P):
 
     # Case 2: 2D point, 3×3 matrix (homogeneous)
     if P.rows == 2 and M.shape == (3, 3):
-        homog = sp.Matrix([P[0], P[1], 1])
-        x, y, z = M * homog
+        homogenus = sp.Matrix([P[0], P[1], 1])
+        x, y, z = M * homogenus
         return sp.Matrix([x/z, y/z])
 
     # Case 3: 3D point, 3×3 matrix
@@ -49,8 +49,8 @@ def rank(M):
     return M.rank()
 
 def perpendicular_vector(v):
-    perp = sp.Matrix([-v[1], v[0]])
-    return perp
+    perpendicular = sp.Matrix([-v[1], v[0]])
+    return perpendicular
 
 def rref(M):
     return M.rref()
@@ -60,11 +60,11 @@ def transpose(M):
 
 def unit_perpendicular_vector(a, b):
     v = sp.Matrix([a, b])
-    unit_perp = sp.Matrix([-v[1], v[0]]) / sqrt(v[0]**2 + v[1]**2)
-    return unit_perp
+    unit_perpendicular_vector = sp.Matrix([-v[1], v[0]]) / pyas_math.sqrt(v[0]**2 + v[1]**2)
+    return unit_perpendicular_vector
 
 def unit_vector(x, y):
-    length = sqrt(x**2 + y**2)
+    length = pyas_math.sqrt(x**2 + y**2)
     if length == 0:
         return "Zero vector has no direction."
     else:
