@@ -1,5 +1,8 @@
 # Python Algebra System [CALCULUS]
+
 import sympy as sp
+import pyas_math
+import pyas_algebra
 x, y, z, t = sp.symbols('x, y, z, t')
 
 def asymptote_conic(a, b):
@@ -32,23 +35,23 @@ def complex_roots(P):
     return sp.solve(P, x)
 
 def curvature_function(f):
-    return abs(sp.diff(f, x, 2)) / (1 + sp.diff(f, x)**2)**sp.Rational(3,2)
+    return pyas_math.absolute_value(sp.diff(f, x, 2)) / (1 + sp.diff(f, x)**2)**sp.Rational(3,2)
 
 def curvature_parametric(x_t, y_t):
-    num = abs(sp.diff(x_t,t)*sp.diff(y_t,t,2) - sp.diff(y_t,t)*sp.diff(x_t,t,2))
-    den = (sp.diff(x_t,t)**2 + sp.diff(y_t,t)**2)**sp.Rational(3,2)
-    return num / den
+    numerator = pyas_math.absolute_value(sp.diff(x_t,t)*sp.diff(y_t,t,2) - sp.diff(y_t,t)*sp.diff(x_t,t,2))
+    denominator = (sp.diff(x_t,t)**2 + sp.diff(y_t,t)**2)**sp.Rational(3,2)
+    return numerator / denominator
 
 def curvature_vector_function(f):
     f1, f2 = sp.diff(f,x), sp.diff(f,x,2)
     return (f2/(1+f1**2)**sp.Rational(3,2)) * sp.Matrix([-f1,1])
 
 def curvature_vector_parametric(x_t, y_t):
-    xp, yp = sp.diff(x_t,t), sp.diff(y_t,t)
-    xpp, ypp = sp.diff(x_t,t,2), sp.diff(y_t,t,2)
-    num = xp*ypp - yp*xpp
-    den = (xp**2 + yp**2)**sp.Rational(3,2)
-    return (num/den) * sp.Matrix([-yp, xp])
+    x_prime, y_prime = sp.diff(x_t,t), sp.diff(y_t,t)
+    x_double_prime, y_double_prime = sp.diff(x_t,t,2), sp.diff(y_t,t,2)
+    numerator = x_prime*y_double_prime - y_prime*x_double_prime
+    denominator = (x_prime**2 + y_prime**2)**sp.Rational(3,2)
+    return (numerator/denominator) * sp.Matrix([-y_prime, x_prime])
 
 def curve(x_t, y_t, a, b):
     return (x_t, y_t, (t, a, b))
@@ -57,8 +60,8 @@ def degree(P):
     return sp.degree(P, x)
 
 def denominator(f):
-    denom = sp.fraction(f)[1]
-    return sp.simplify(denom)
+    denominator = sp.fraction(f)[1]
+    return sp.simplify(denominator)
 
 def derivative_single_variable(f, n):
     return sp.diff(f, x, n)
@@ -67,18 +70,18 @@ def partial_derivative(f, var, n):
     return sp.diff(f, var, n)
 
 def factors_polynomial(P):
-    return sp.factor(P)
+    return pyas_algebra.factorise(P)
 
 def factors_integer(n):
-    return sp.divisors(n)
+    return pyas_algebra.prime_factors(n)
 
 def implicit_derivative(f):
-    fx = sp.diff(f, x)
-    fy = sp.diff(f, y)
-    return -fx / fy
+    f_x = partial_derivative(f, x, 1)
+    f_y = partial_derivative(f, y, 2)
+    return -f_x / f_y
 
 def inflection_point(P):
-    candidates = sp.solve(sp.diff(P, x,2), x)
+    candidates = pyas_algebra.solve_equation(partial_derivative(P, x, 2), 0)
     points = [(x0, P.subs(x,x0)) for x0 in candidates]
     return points
 
@@ -92,27 +95,27 @@ def integral_between(f, g, a, b):
     return sp.integrate(f - g, (x, a, b))
 
 def is_vertex_form(f):
-    coeffs = sp.Poly(f, x).all_coeffs()
-    if len(coeffs) == 3:
-        a,b,c = coeffs
+    coefficients = sp.Poly(f, x).all_coeffs()
+    if len(coeffcients) == 3:
+        a,b,c = coefficients
         h = -b/(2*a)
         k = f.subs(x,h)
         vertex_form = a*(x-h)**2 + k
         return vertex_form
 
 def iteration(f, x0, n):
-    xi = x0
+    x_i = x0
     for _ in range(n):
-        xi = f.subs(x, xi)
-    return xi
+        x_i = f.subs(x, x_i)
+    return x_i
 
 def iteration_list(f, x0, n):
-    seq = [x0]
-    xi = x0
+    sequence = [x0]
+    x_i = x0
     for _ in range(n):
-        xi = f.subs(x, xi)
-        seq.append(xi)
-    return seq
+        x_i = f.subs(x, x_i)
+        sequence.append(x_i)
+    return sequence
 
 def left_sum(f, a, b, n):
     dx = (b - a) / n
@@ -129,51 +132,51 @@ def limit_below(f, a):
 
 def lower_sum(f, a, b, n):
     dx = (b - a) / n
-    return sum(min(f.subs(x,a+i*dx), f.subs(x,a+(i+1)*dx)) * dx for i in range(n))
+    return sum(pyas_algebra.maximum(f.subs(x,a+i*dx), f.subs(x,a+(i+1)*dx)) * dx for i in range(n))
 
 def n_integral(f, a, b):
-    return sp.N(sp.integrate(f, (x, a, b)))
+    return sp.N(definite_integral(f, a, b, x))
 
 def normalize_number(A):
-    a, b = min(A), max(A)
+    a, b = pyas_algebra.minimum(A), pyas_algebra.maximum(A)
     normalized = [(x - a)/(b - a) if b != a else 0 for x in A]
     return normalized
 
 def normalize_vector(v):
-    norm = sp.sqrt(sum([coord**2 for coord in v]))
+    norm = pyas_math.sqrt(sum([coordinate**2 for coordinate in v]))
     if norm == 0:
         return "Zero vector, cannot normalize"
     else:
-        normalized = [coord/norm for coord in v]
+        normalized = [coordinate/norm for coordinate in v]
         return normalized
 
-def n_solve_ode(lhs, rhs):
-    sol = sp.dsolve(sp.Eq(lhs, rhs))
-    return sol
+def n_solve_ode(left, right):
+    solution = sp.dsolve(sp.Eq(left, right))
+    return solution
 
 def numerator(f):
-    num = sp.fraction(f)[0]
-    return num
+    numerator = sp.fraction(f)[0]
+    return numerator
 
 def osculating_circle(f, P):
     x0, y0 = P
-    f1 = sp.diff(f,x)
-    f2 = sp.diff(f,x,2)
-    k = abs(f2)/(1+f1**2)**sp.Rational(3,2)
+    f1 = derivative_single_variable(f, 1)
+    f2 = derivative_single_variable(f, 2)
+    k = pyas_math.absolute_value(f2)/(1+f1**2)**sp.Rational(3,2)
     R = 1/k.subs(x,x0)
     N = sp.Matrix([-f1.subs(x,x0),1]) / sp.sqrt(1+f1.subs(x,x0)**2)
     C = sp.Matrix([x0,y0]) + R*N
     return (x-C[0])**2 + (y-C[1])**2 - R**2
 
 def parametric_derivative(x_t, y_t):
-    return sp.diff(y_t, t) / sp.diff(x_t, t)
+    return derivative_single_variable(y_t, 1) / derivative_single_variable(x_t, 1)
 
 def partial_fractions(f):
     return sp.apart(f)
 
 def path_parameter(x_t, y_t, P, t_start, t_end):
-    sol = sp.solve([x_t - P[0], y_t - P[1]], t)
-    t0 = next((s for s in sol if t_start <= s <= t_end), None)
+    solution = pyas_algebra.solve_equation([x_t - P[0], y_t - P[1]], 0)
+    t0 = next((s for s in solution if t_start <= s <= t_end), None)
     if t0 is None:
         return "Point not on path in interval"
     else:
@@ -183,12 +186,12 @@ def path_parameter(x_t, y_t, P, t_start, t_end):
 def polynomial(f):
     return sp.expand(f)
 
-def polynomial_interpolation(f, n, px, py):
+def polynomial_interpolation(f, n, p_x, p_y):
     points = []
     for i in range(n):
-        points.append((px, py))
-        interp = sp.interpolate(points, x)
-    return interp
+        points.append((p_x, p_y))
+        interpolate = sp.interpolate(points, x)
+    return interpolate
 
 def rectangle_sum(f, a, b, n, d):
     dx = (b - a)/n
@@ -199,11 +202,11 @@ def rectangle_sum(f, a, b, n, d):
     return total
 
 def removable_discontinuity(P, Q):
-    f = sp.simplify(P/Q)
+    f = pyas_algebra.simplify(P/Q)
     holes = []
-    for r in sp.solve(Q, x):
+    for r in pyas_algebra.solve_equation(Q, 0):
         if P.subs(x,r) == 0:
-            holes.append((r, sp.limit(f,x,r)))
+            holes.append((r, limit(f, r)))
     return f, holes
 
 def right_sum(f, a, b, n):
@@ -211,38 +214,38 @@ def right_sum(f, a, b, n):
     return sum(f.subs(x, a + (i+1)*dx) * dx for i in range(n))
 
 def root_polynomial(P):
-    return sp.solve(P, x)
+    return pyas_algebra.solve_equation(P, 0)
 
 def root_initial_value(P, x0):
-    return sp.nsolve(P, x, x0)
+    return pyas_algebra.n_solutions(P, 0, x0)
 
-def root_interval(P, a, b, tol=1e-6, max_iter=100):
-    fa, fb = float(P.subs(x, a)), float(P.subs(x, b))
-    if fa * fb > 0:
+def root_interval(P, a, b, tolerance=1e-6, max_iterations=100):
+    f_a, f_b = float(P.subs(x, a)), float(P.subs(x, b))
+    if f_a * f_b > 0:
         raise ValueError("f(a) and f(b) must have opposite signs")
-    for _ in range(max_iter):
+    for _ in range(max_iterations):
         c = (a + b) / 2
-        fc = float(P.subs(x, c))
-        if abs(fc) < tol or abs(b - a) < tol:
+        f_c = float(P.subs(x, c))
+        if pyas_math.absolute_value(f_c) < tolerance or pyas_math.absolute_value(b - a) < tolerance:
             return c
-        if fa * fc < 0:
-            b, fb = c, fc
+        if f_a * f_c < 0:
+            b, f_b = c, f_c
         else:
-            a, fa = c, fc
+            a, f_a = c, f_c
     raise RuntimeError("Bisection did not converge")
 
-def root_list(vals):
-    return [(v, 0) for v in vals]
+def root_list(values):
+    return [(v, 0) for v in values]
 
-def solve_ode(lhs, rhs):
-    return sp.dsolve(sp.Eq(lhs, rhs))
+def solve_ode(left, right):
+    return sp.dsolve(sp.Eq(left, right))
 
-def spline(n, x_val, y_val, order):
+def spline(n, x, y, order):
     points = []
     for i in range(n):
-        points.append((x_val, y_val))
-    spline_poly = sp.interpolate(points, x, method='bspline', degree=order)
-    return spline_poly
+        points.append((x, y))
+    spline_polynomial = sp.interpolate(points, x, method='bspline', degree=order)
+    return spline_polynomial
 
 def svd(A):
     U, S, V = sp.Matrix(A).singular_value_decomposition()
@@ -265,14 +268,14 @@ def trig_simplify(expr):
     return sp.trigsimp(expr)
 
 def turning_point(f):
-    f_prime = sp.diff(f, x)
-    critical_points = sp.solve(f_prime, x)
-    f_double_prime = sp.diff(f_prime, x)
+    f_prime = derivative_single_variable(f, 1)
+    critical_points = (f_prime, 0)
+    f_double_prime = derivative_single_variable(f_prime, 1)
     points = []
-    for cp in critical_points:
-        concavity = f_double_prime.subs(x, cp)
+    for c_p in critical_points:
+        concavity = f_double_prime.subs(x, c_p)
         kind = 'Minimum' if concavity>0 else 'Maximum' if concavity<0 else 'Inconclusive'
-        points.append((cp, f.subs(x,cp), kind))
+        points.append((c_p, f.subs(x,c_p), kind))
     return points
 
 def upper_sum(f, a, b, n):
