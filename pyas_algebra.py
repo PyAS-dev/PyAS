@@ -85,7 +85,7 @@ def is_prime(n):
     return sp.isprime(n)
 
 def lcm(*nums):
-    return pyas_math.absolute_value(*nums)/gcd(*nums)
+    return abs(sp.lcm(list(nums)))
 
 def maximum(*nums):
     return max(nums)
