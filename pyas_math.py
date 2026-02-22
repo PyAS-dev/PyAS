@@ -2,6 +2,7 @@
 
 import sympy as sp
 from random import uniform
+import pyas_calculus
 
 # === BASIC FUNCTIONS ===
 
@@ -23,7 +24,7 @@ def absolute_value(x):
     else:
         return -x
 
-def sgn(x):
+def sign(x):
     if x > 0:
         return 1
     elif x == 0:
@@ -67,10 +68,10 @@ def ln(x):
     return sp.log(x)
 
 def log10(x):
-    return sp.log(x, 10)
+    return ln(x)/ln(10)
 
 def log2(x):
-    return sp.log(x, 2)
+    return ln(x)/ln(2)
 
 # === TRIGONOMETRIC FUNCTIONS ===
 
@@ -92,28 +93,28 @@ def csc(x):
 def cot(x):
     return cos(x)/sin(x)
 
-def asin(x):
+def arcsin(x):
     return sp.asin(x)
 
-def acos(x):
+def arccos(x):
     return sp.acos(x)
 
-def atan(x):
+def arctan(x):
     return sp.atan(x)
 
-def atan2(y, x):
+def arctan2(y, x):
     if x > 0:
-        return atan(y/x)
+        return arctan(y/x)
     elif x < 0 and y >= 0:
-        return atan(y/x) + sp.pi
+        return arctan(y/x) + sp.pi
     elif x < 0 and y < 0:
-        return atan(y/x) - sp.pi
+        return arctan(y/x) - sp.pi
     elif x == 0 and y > 0:
         return sp.pi/2
     elif x == 0 and y < 0:
         return -sp.pi/2
     else:
-        return undefined
+        return "undefined"
 
 # === HYPERBOLIC FUNCTIONS ===
 
@@ -135,24 +136,24 @@ def csch(x):
 def coth(x):
     return cosh(x)/sinh(x)
 
-def asinh(x):
+def arcsinh(x):
     return ln(x + sqrt(x**2 + 1))
 
-def acosh(x):
-    return ln(x - sqrt(x**2 - 1))
+def arccosh(x):
+    return ln(x + sqrt(x**2 - 1))
 
-def atanh(x):
+def arctanh(x):
     return 1/2 * ln((1 + x)/(1 - x))
 
 # === SPECIAL FUNCTIONS ===
 
 def gamma(x):
     t = sp.symbols('t')
-    return sp.integrate(t**(x - 1) * exp(-t), (t, 0, sp.oo))
+    return pyas_calculus.definite_integral(t**(x - 1) * exp(-t), 0, sp.oo, t)
 
 def lower_incomplete_gamma(a, x):
     t = sp.symbols('t')
-    return sp.integrate(t**(a - 1) * exp(-t), (t, 0, x))
+    return pyas_calculus.definite_integral(t**(a - 1) * exp(-t), 0, x, t)
 
 def gamma_regularized(a, x):
     t = sp.symbols('t')
@@ -161,7 +162,7 @@ def gamma_regularized(a, x):
     return lower_incomplete_gamma(a, x)/gamma(a)
 
 def psi(x):
-    return sp.digamma(x)
+    return pyas_calculus.derivative_single_variable(gamma(x), 1)/gamma(x)
 
 def beta(a, b):
     return (gamma(a)*gamma(b))/gamma(a + b)
@@ -170,7 +171,7 @@ def incomplete_beta(a, b, x):
     t = sp.symbols('t')
     a = sp.sympify(a)
     b = sp.sympify(b)
-    return sp.integrate(t**(a - 1) * (1 - t)**(b - 1), (t, 0, x))
+    return pyas_calculus.definite_integral(t**(a - 1) * (1 - t)**(b - 1), 0, x, t)
 
 def beta_regularized(a, b, x):
     t = sp.symbols('t')
@@ -178,7 +179,7 @@ def beta_regularized(a, b, x):
 
 def erf(x):
     t = sp.symbols('t')
-    return 2/sqrt(x) * sp.integrate(exp(-t**2), (t, 0, x))
+    return 2/sqrt(sp.pi) * pyas_calculus.definite_integral(exp(-t**2), 0, x, t)
 
 def nPr(n, r):
     return sp.factorial(n)/sp.factorial(n - r)
@@ -188,15 +189,15 @@ def nCr(n, r):
 
 def sin_integral(x):
     t = sp.symbols('t')
-    return sp.integrate(sin(t)/t, (t, 0, x))
+    return pyas_calculus.definite_integral(sin(t)/t, 0, x, t)
 
 def cos_integral(x):
     t = sp.symbols('t')
-    return -sp.integrate(cos(t)/t, (t, x, sp.oo))
+    return -pyas_calculus.definite_integral(cos(t)/t, x, sp.oo, t)
 
 def exp_integral(x):
     t = sp.symbols('t')
-    return sp.integrate(exp(t)/t, (t, -sp.oo, x))
+    return pyas_calculus.definite_integral(exp(t)/t, -sp.oo, x, t)
 
 def zeta(s):
     s = sp.sympify(s)
@@ -204,7 +205,10 @@ def zeta(s):
     return sp.summation(1/n**s, (n, 1, sp.oo))
 
 def dirac(x):
-    return sp.DiracDelta(x)
+    if x != 0:
+        return 0
+    else:
+        return sp.oo
 
 def heaviside(x):
     if x < 0:
@@ -215,11 +219,11 @@ def heaviside(x):
 # === MENU SETUP ===
 
 FUNCTIONS = {
-    'random': random, 'sqrt': sqrt, 'cbrt': cbrt, 'nroot': nroot, 'absolute_value': absolute_value, 'sgn': sgn, 'arg': arg,
+    'random': random, 'sqrt': sqrt, 'cbrt': cbrt, 'nroot': nroot, 'absolute_value': absolute_value, 'sign': sign, 'arg': arg,
     'conjugate': conjugate, 'real': real, 'imaginary': imaginary, 'floor': floor, 'ceil': ceil, 'nearest_integer': nearest_integer,
     'fractional_part':fractional_part, 'log': log, 'exp': exp, 'ln': ln, 'log10': log10, 'log2': log2, 'sin': sin, 'cos': cos,
-    'tan': tan, 'sec': sec, 'csc': csc, 'cot': cot, 'asin': asin, 'acos': acos, 'atan':atan, 'atan2': atan2, 'sinh': sinh,
-    'cosh': cosh, 'tanh': tanh, 'sech': sech, 'csch': csch, 'coth': coth, 'asinh': asinh, 'acosh': acosh, 'atanh': atanh,
+    'tan': tan, 'sec': sec, 'csc': csc, 'cot': cot, 'arcsin': arcsin, 'arccos': arccos, 'arctan':arctan, 'arctan2': arctan2, 'sinh': sinh,
+    'cosh': cosh, 'tanh': tanh, 'sech': sech, 'csch': csch, 'coth': coth, 'arcsinh': arcsinh, 'arccosh': arccosh, 'arctanh': arctanh,
     'gamma': gamma, 'lower_incomplete_gamma': lower_incomplete_gamma, 'gamma_regularized': gamma_regularized, 'psi': psi,
     'beta': beta, 'incomplete_beta': incomplete_beta, 'beta_regularized': beta_regularized, 'erf': erf, 'nPr': nPr, 'nCr': nCr,
     'sin_integral': sin_integral, 'cos_integral': cos_integral, 'exp_integral': exp_integral, 'zeta': zeta, 'dirac': dirac,
