@@ -96,12 +96,14 @@ def integral_between(f, g, a, b):
 
 def is_vertex_form(f):
     coefficients = sp.Poly(f, x).all_coeffs()
-    if len(coeffcients) == 3:
+    if len(coefficients) == 3:
         a,b,c = coefficients
         h = -b/(2*a)
         k = f.subs(x,h)
         vertex_form = a*(x-h)**2 + k
         return vertex_form
+    else:
+        return False
 
 def iteration(f, x0, n):
     x_i = x0
@@ -175,8 +177,18 @@ def partial_fractions(f):
     return sp.apart(f)
 
 def path_parameter(x_t, y_t, P, t_start, t_end):
-    solution = pyas_algebra.solve_equation([x_t - P[0], y_t - P[1]], 0)
-    t0 = next((s for s in solution if t_start <= s <= t_end), None)
+    eq1 = x_t - P[0]
+    eq2 = y_t - P[1]
+    solution = sp.solve([eq1, eq2], t)
+    if isinstance(solution, list):
+        t0 = next((s for s in solution if t_start <= s <= t_end), None)
+    elif isinstance(solution, dict):
+        t0 = solution.get(t, None)
+        if t0 is not None and not (t_start <= t0 <= t_end):
+            t0 = None
+    else:
+        t0 = solution if isinstance(solution, (int, float)) else None
+    
     if t0 is None:
         return "Point not on path in interval"
     else:
@@ -269,7 +281,7 @@ def trig_simplify(expr):
 
 def turning_point(f):
     f_prime = derivative_single_variable(f, 1)
-    critical_points = (f_prime, 0)
+    critical_points = pyas_algebra.solve_equation(f_prime, 0)
     f_double_prime = derivative_single_variable(f_prime, 1)
     points = []
     for c_p in critical_points:
@@ -297,11 +309,11 @@ FUNCTIONS = {asymptote_conic: "asymptote_conic", asymptote_function: "asymptote_
              left_sum: "left_sum", limit: "limit", limit_above: "limit_above", limit_below: "limit_below",
              lower_sum: "lower_sum", n_integral: "n_integral", normalize_number: "normalize_number",
              normalize_vector: "normalize_vector", numerator: "numerator", osculating_circle: "osculating_circle",
-             parametric_derivative: "parametric_derivative",partial_fractions: "partial_fractions",
-             path_parameter: "path_parameter", polynomial: "polynomial", rectangle_sum: "rectangle_sum",
-             removable_discontinuity: "removable_discontinuity", root_polynomial: "root_polynomial",
-             root_initial_value: "root_initial_value", root_interval: "root_interval", root_list: "root_list",
-             solve_ode: "solve_ode", spline: "spline", svd: "svd", taylor_polynomial: "taylor_polynomial",
-             trapezoid_sum: "trapezoid_sum", trig_combine: "trig_combine", trig_expand: "trig_expand",
-             trig_simplify: "trig_simplify", turning_point: turning_point
+             partial_fractions: "partial_fractions", path_parameter: "path_parameter", polynomial: "polynomial",
+             rectangle_sum: "rectangle_sum", removable_discontinuity: "removable_discontinuity",
+             root_polynomial: "root_polynomial", root_initial_value: "root_initial_value",
+             root_interval: "root_interval", root_list: "root_list", solve_ode: "solve_ode", spline: "spline",
+             svd: "svd", taylor_polynomial: "taylor_polynomial", trapezoid_sum: "trapezoid_sum",
+             trig_combine: "trig_combine", trig_expand: "trig_expand", trig_simplify: "trig_simplify",
+             turning_point: "turning_point"
              }
