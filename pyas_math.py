@@ -221,7 +221,7 @@ def heaviside(x):
 FUNCTIONS = {
     'random': random, 'sqrt': sqrt, 'cbrt': cbrt, 'nroot': nroot, 'absolute_value': absolute_value, 'sign': sign, 'arg': arg,
     'conjugate': conjugate, 'real': real, 'imaginary': imaginary, 'floor': floor, 'ceil': ceil, 'nearest_integer': nearest_integer,
-    'fractional_part':fractional_part, 'log': log, 'exp': exp, 'ln': ln, 'log10': log10, 'log2': log2, 'sin': sin, 'cos': cos,
+    'fractional_part': fractional_part, 'log': log, 'exp': exp, 'ln': ln, 'log10': log10, 'log2': log2, 'sin': sin, 'cos': cos,
     'tan': tan, 'sec': sec, 'csc': csc, 'cot': cot, 'arcsin': arcsin, 'arccos': arccos, 'arctan':arctan, 'arctan2': arctan2, 'sinh': sinh,
     'cosh': cosh, 'tanh': tanh, 'sech': sech, 'csch': csch, 'coth': coth, 'arcsinh': arcsinh, 'arccosh': arccosh, 'arctanh': arctanh,
     'gamma': gamma, 'lower_incomplete_gamma': lower_incomplete_gamma, 'gamma_regularized': gamma_regularized, 'psi': psi,
