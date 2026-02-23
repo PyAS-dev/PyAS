@@ -1,8 +1,6 @@
 # Python Algebra System [ALGEBRA]
 
 import sympy as sp
-from sympy.polys import factor
-from sympy import QQ
 import pyas_math
 
 x, y = sp.symbols('x y')
@@ -25,9 +23,9 @@ def vector_cross_product(u, v):
     v = sp.Matrix(v)
     return u.cross(v)
 
-def complex_solutions(l, r):
+def complex_solutions(left, right):
     """Solve a single complex equation l = r"""
-    equation = sp.Eq(l, r)
+    equation = sp.Eq(left, right)
     return sp.solve(equation, x)
 
 def complex_solutions_system(left1, right1, left2, right2):
@@ -59,17 +57,17 @@ def vector_dot_product(u, v):
     v = sp.Matrix(v)
     return u.dot(v)
 
-def expand(expr):
-    return sp.expand(expr)
+def expand(expression):
+    return sp.expand(expression)
 
-def factorise(expr):
-    return sp.factor(expr)
+def factorise(expression):
+    return sp.factor(expression)
 
 def from_base(n_string, base):
     return int(n_string, base)
 
-def gcd(*nums):
-    return sp.gcd(list(nums))
+def gcd(*numbers):
+    return sp.gcd(list(numbers))
 
 def irrational_factor(expression):
     return "Did you really think factoring is simple? \n"
@@ -84,14 +82,14 @@ def is_factored(expression):
 def is_prime(n):
     return sp.isprime(n)
 
-def lcm(*nums):
-    return abs(sp.lcm(list(nums)))
+def lcm(*numbers):
+    return abs(sp.lcm(list(numbers)))
 
-def maximum(*nums):
-    return max(nums)
+def maximum(*numbers):
+    return max(numbers)
 
-def minimum(*nums):
-    return min(nums)
+def minimum(*numbers):
+    return min(numbers)
 
 def mod_number(a, n):
     return a % n
@@ -114,8 +112,8 @@ def previous_prime(n):
 def prime_factors(n):
     return sp.factorint(n)
 
-def simplify(expr):
-    return sp.simplify(expr)
+def simplify(expression):
+    return sp.simplify(expression)
 
 def solve_equation(left, right):
     equation = sp.Eq(left, right)
