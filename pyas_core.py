@@ -7,7 +7,6 @@ import pyas_algebra
 import pyas_calculus
 import pyas_linear_algebra
 import ast
-import ast
 from sympy.parsing.sympy_parser import parse_expr
 
 # -----------------------------
@@ -73,7 +72,7 @@ def parse_call(expression: str):
 # Executor: call FUNCTIONS dynamically
 # -----------------------------
 def execute(expression: str):
-    function_name, arguments = parse_call(expr)
+    function_name, arguments = parse_call(expression)
     if function_name not in FUNCTIONS:
         raise ValueError(f"Unknown function: {function_name}")
     return FUNCTIONS[function_name](*arguments)
