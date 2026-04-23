@@ -1,7 +1,5 @@
-#Python Algebra System [LINEAR ALGEBRA]
-
 import sympy as sp
-import pyas_math
+import functions
 
 # ======== Functions ========
 
