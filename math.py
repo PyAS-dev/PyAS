@@ -1,8 +1,6 @@
-# Python Algebra System [MATHEMATICAL FUNCTIONS]
-
 import sympy as sp
 from random import uniform
-import pyas_calculus
+import calculus
 
 # === BASIC FUNCTIONS ===
 
@@ -19,18 +17,17 @@ def nroot(x, n):
     return x**sp.Rational(1, n)
 
 def absolute_value(x):
-    if x >= 0:
-        return x
-    else:
-        return -x
+    return sp.Piecewise(
+        (x, x >= 0),
+        (-x, True)
+        )
 
 def sign(x):
-    if x > 0:
-        return 1
-    elif x == 0:
-        return 0
-    else:
-        return -1
+    return sp.Piecewise(
+        (1, x > 0),
+        (0, x == 0),
+        (-1, True)
+        )
 
 def arg(z):
     return sp.arg(z)
@@ -103,18 +100,14 @@ def arctan(x):
     return sp.atan(x)
 
 def arctan2(y, x):
-    if x > 0:
-        return arctan(y/x)
-    elif x < 0 and y >= 0:
-        return arctan(y/x) + sp.pi
-    elif x < 0 and y < 0:
-        return arctan(y/x) - sp.pi
-    elif x == 0 and y > 0:
-        return sp.pi/2
-    elif x == 0 and y < 0:
-        return -sp.pi/2
-    else:
-        return "undefined"
+    return sp.Piecewise(
+        (arctan(y/x), x > 0),
+        (arctan(y/x) + sp.pi, sp.And(x < 0, y >= 0)),
+        (arctan(y/x) - sp.pi, sp.And(x < 0, y < 0)),
+        (sp.pi/2, sp.And(x == 0, y > 0)),
+        (-sp.pi/2, sp.And(x == 0, y < 0)),
+        (sp.nan, sp.And(x == 0, y == 0))
+    )
 
 # === HYPERBOLIC FUNCTIONS ===
 
@@ -149,11 +142,11 @@ def arctanh(x):
 
 def gamma(x):
     t = sp.symbols('t')
-    return pyas_calculus.definite_integral(t**(x - 1) * exp(-t), 0, sp.oo, t)
+    return calculus.definite_integral(t**(x - 1) * exp(-t), 0, sp.oo, t)
 
 def lower_incomplete_gamma(a, x):
     t = sp.symbols('t')
-    return pyas_calculus.definite_integral(t**(a - 1) * exp(-t), 0, x, t)
+    return calculus.definite_integral(t**(a - 1) * exp(-t), 0, x, t)
 
 def gamma_regularized(a, x):
     t = sp.symbols('t')
@@ -162,7 +155,7 @@ def gamma_regularized(a, x):
     return lower_incomplete_gamma(a, x)/gamma(a)
 
 def psi(x):
-    return pyas_calculus.derivative_single_variable(gamma(x), 1)/gamma(x)
+    return calculus.derivative_single_variable(gamma(x), 1)/gamma(x)
 
 def beta(a, b):
     return (gamma(a)*gamma(b))/gamma(a + b)
@@ -171,7 +164,7 @@ def incomplete_beta(a, b, x):
     t = sp.symbols('t')
     a = sp.sympify(a)
     b = sp.sympify(b)
-    return pyas_calculus.definite_integral(t**(a - 1) * (1 - t)**(b - 1), 0, x, t)
+    return calculus.definite_integral(t**(a - 1) * (1 - t)**(b - 1), 0, x, t)
 
 def beta_regularized(a, b, x):
     t = sp.symbols('t')
@@ -179,7 +172,7 @@ def beta_regularized(a, b, x):
 
 def erf(x):
     t = sp.symbols('t')
-    return 2/sqrt(sp.pi) * pyas_calculus.definite_integral(exp(-t**2), 0, x, t)
+    return 2/sqrt(sp.pi) * calculus.definite_integral(exp(-t**2), 0, x, t)
 
 def nPr(n, r):
     return sp.factorial(n)/sp.factorial(n - r)
@@ -189,15 +182,15 @@ def nCr(n, r):
 
 def sin_integral(x):
     t = sp.symbols('t')
-    return pyas_calculus.definite_integral(sin(t)/t, 0, x, t)
+    return calculus.definite_integral(sin(t)/t, 0, x, t)
 
 def cos_integral(x):
     t = sp.symbols('t')
-    return -pyas_calculus.definite_integral(cos(t)/t, x, sp.oo, t)
+    return -calculus.definite_integral(cos(t)/t, x, sp.oo, t)
 
 def exp_integral(x):
     t = sp.symbols('t')
-    return pyas_calculus.definite_integral(exp(t)/t, -sp.oo, x, t)
+    return calculus.definite_integral(exp(t)/t, -sp.oo, x, t)
 
 def zeta(s):
     s = sp.sympify(s)
@@ -205,16 +198,17 @@ def zeta(s):
     return sp.summation(1/n**s, (n, 1, sp.oo))
 
 def dirac(x):
-    if x != 0:
-        return 0
-    else:
-        return sp.oo
+    return sp.Piecewise(
+        (0, x != 0), 
+        (sp.oo, True)
+        )
 
 def heaviside(x):
-    if x < 0:
-        return 0
-    else:
-        return 1
+    return sp.Piecewise(
+        (0, x < 0), 
+        (1, True)
+        )
+    
 
 # === MENU SETUP ===
 
