@@ -1,7 +1,5 @@
-# Python Algebra System [ALGEBRA]
-
 import sympy as sp
-import pyas_math
+import math
 
 x, y = sp.symbols('x y')
 
@@ -11,7 +9,7 @@ x, y = sp.symbols('x y')
 
 def common_denominator(P1, Q1, P2, Q2):
     """Return the common denominator of P1/Q1 and P2/Q2"""
-    return sp.simplify(Q1 * Q2)
+    return sp.lcm(Q1, Q2)
 
 def complete_square(b, c):
     """Return completed square of x^2 + bx + c"""
@@ -70,11 +68,10 @@ def gcd(*numbers):
     return sp.gcd(list(numbers))
 
 def irrational_factor(expression):
-    return "Did you really think factoring is simple? \n"
-    "https://en.wikipedia.org/wiki/Field_extension"
+    return "Did you really think factoring is simple? https://en.wikipedia.org/wiki/Field_extension"
 
 def is_factored(expression):
-    if expression == sp.factor(expression):
+    if expression == factorise(expression):
         return True
     else:
         return False
@@ -86,10 +83,10 @@ def lcm(*numbers):
     return abs(sp.lcm(list(numbers)))
 
 def maximum(*numbers):
-    return max(numbers)
+    return sp.Max(numbers)
 
 def minimum(*numbers):
-    return min(numbers)
+    return sp.Min(numbers)
 
 def mod_number(a, n):
     return a % n
@@ -100,7 +97,7 @@ def mod_polynomial(P, Q):
 def next_prime(n):
     return sp.nextprime(n)
 
-def n_solutions(left, right, start=None):
+def n_solutions(left, right, start):
     equation = sp.Eq(left, right)
     if start is not None:
         return sp.nsolve(equation, x, start)
@@ -117,7 +114,7 @@ def simplify(expression):
 
 def solve_equation(left, right):
     equation = sp.Eq(left, right)
-    return sp.solve(equation)
+    return sp.solve(equation, x)
 
 def solve_inequality(expression):
     return sp.solve_univariate_inequality(expression, x)
