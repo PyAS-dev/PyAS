@@ -1,11 +1,11 @@
-version = "1.0.0"
+version = "1.1.19"
 import inspect
 import sympy as sp
 import math
-import pyas_math
-import pyas_algebra
-import pyas_calculus
-import pyas_linear_algebra
+import functions
+import algebra
+import calculus
+import linear_algebra
 import ast
 from sympy.parsing.sympy_parser import parse_expr
 
@@ -19,11 +19,11 @@ def register_module_FUNCTIONS(module):
         if inspect.isfunction(object) and not name.startswith("_"):
             FUNCTIONS[name] = object
 
-# register FUNCTIONS from both modules
-register_module_FUNCTIONS(pyas_algebra)
-register_module_FUNCTIONS(pyas_math)
-register_module_FUNCTIONS(pyas_calculus)
-register_module_FUNCTIONS(pyas_linear_algebra)
+# register FUNCTIONS from all modules
+register_module_FUNCTIONS(algebra)
+register_module_FUNCTIONS(functions)
+register_module_FUNCTIONS(calculus)
+register_module_FUNCTIONS(linear_algebra)
 
 # -----------------------------
 # Parser: converts string to functiontion + arguments
