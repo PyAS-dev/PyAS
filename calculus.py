@@ -1,15 +1,13 @@
-# Python Algebra System [CALCULUS]
-
 import sympy as sp
-import pyas_math
-import pyas_algebra
+import functions
+import algebra
 x, y, z, t = sp.symbols('x, y, z, t')
 
 def asymptote_conic(a, b):
     return [b*x/a, -b*x/a]
 
 def asymptote_function(P, Q):
-    f = sp.simplify(P / Q)
+    f = algebra.simplify(P / Q)
     result = {}
     result["vertical"] = sp.solve(Q, x)
     result["horizontal"] = (
@@ -32,13 +30,13 @@ def coefficients_conic(f):
     return sp.Poly(f, x, y).all_coeffs()
 
 def complex_roots(P):
-    return sp.solve(P, x)
+    return algebra.solve_equation(P, 0)
 
 def curvature_function(f):
-    return pyas_math.absolute_value(sp.diff(f, x, 2)) / (1 + sp.diff(f, x)**2)**sp.Rational(3,2)
+    return functions.absolute_value(sp.diff(f, x, 2)) / (1 + sp.diff(f, x)**2)**sp.Rational(3,2)
 
 def curvature_parametric(x_t, y_t):
-    numerator = pyas_math.absolute_value(sp.diff(x_t,t)*sp.diff(y_t,t,2) - sp.diff(y_t,t)*sp.diff(x_t,t,2))
+    numerator = functions.absolute_value(sp.diff(x_t,t)*sp.diff(y_t,t,2) - sp.diff(y_t,t)*sp.diff(x_t,t,2))
     denominator = (sp.diff(x_t,t)**2 + sp.diff(y_t,t)**2)**sp.Rational(3,2)
     return numerator / denominator
 
@@ -61,7 +59,7 @@ def degree(P):
 
 def denominator(f):
     denominator = sp.fraction(f)[1]
-    return sp.simplify(denominator)
+    return algebra.simplify(denominator)
 
 def derivative_single_variable(f, n):
     return sp.diff(f, x, n)
@@ -70,18 +68,18 @@ def partial_derivative(f, var, n):
     return sp.diff(f, var, n)
 
 def factors_polynomial(P):
-    return pyas_algebra.factorise(P)
+    return algebra.factorise(P)
 
 def factors_integer(n):
-    return pyas_algebra.prime_factors(n)
+    return algebra.prime_factors(n)
 
 def implicit_derivative(f):
     f_x = partial_derivative(f, x, 1)
-    f_y = partial_derivative(f, y, 2)
+    f_y = partial_derivative(f, y, 1)
     return -f_x / f_y
 
 def inflection_point(P):
-    candidates = pyas_algebra.solve_equation(partial_derivative(P, x, 2), 0)
+    candidates = algebra.solve_equation(derivative_single_variable(P, 2), 0)
     points = [(x0, P.subs(x,x0)) for x0 in candidates]
     return points
 
@@ -92,7 +90,7 @@ def definite_integral(f, a, b, var):
     return sp.integrate(f, (var, a, b))
 
 def integral_between(f, g, a, b):
-    return sp.integrate(f - g, (x, a, b))
+    return definite_integral(f - g, a, b, x)
 
 def is_vertex_form(f):
     coefficients = sp.Poly(f, x).all_coeffs()
@@ -134,18 +132,18 @@ def limit_below(f, a):
 
 def lower_sum(f, a, b, n):
     dx = (b - a) / n
-    return sum(pyas_algebra.maximum(f.subs(x,a+i*dx), f.subs(x,a+(i+1)*dx)) * dx for i in range(n))
+    return sum(algebra.maximum(f.subs(x,a+i*dx), f.subs(x,a+(i+1)*dx)) * dx for i in range(n))
 
 def n_integral(f, a, b):
     return sp.N(definite_integral(f, a, b, x))
 
 def normalize_number(A):
-    a, b = pyas_algebra.minimum(A), pyas_algebra.maximum(A)
+    a, b = algebra.minimum(A), algebra.maximum(A)
     normalized = [(x - a)/(b - a) if b != a else 0 for x in A]
     return normalized
 
 def normalize_vector(v):
-    norm = pyas_math.sqrt(sum([coordinate**2 for coordinate in v]))
+    norm = functions.sqrt(sum([coordinate**2 for coordinate in v]))
     if norm == 0:
         return "Zero vector, cannot normalize"
     else:
@@ -153,7 +151,7 @@ def normalize_vector(v):
         return normalized
 
 def n_solve_ode(left, right):
-    solution = sp.dsolve(sp.Eq(left, right))
+    solution = sp.N(sp.dsolve(sp.Eq(left, right)))
     return solution
 
 def numerator(f):
@@ -164,9 +162,9 @@ def osculating_circle(f, P):
     x0, y0 = P
     f1 = derivative_single_variable(f, 1)
     f2 = derivative_single_variable(f, 2)
-    k = pyas_math.absolute_value(f2)/(1+f1**2)**sp.Rational(3,2)
+    k = functions.absolute_value(f2)/(1+f1**2)**sp.Rational(3,2)
     R = 1/k.subs(x,x0)
-    N = sp.Matrix([-f1.subs(x,x0),1]) / sp.sqrt(1+f1.subs(x,x0)**2)
+    N = sp.Matrix([-f1.subs(x,x0),1]) / functions.sqrt(1+f1.subs(x,x0)**2)
     C = sp.Matrix([x0,y0]) + R*N
     return (x-C[0])**2 + (y-C[1])**2 - R**2
 
@@ -214,9 +212,9 @@ def rectangle_sum(f, a, b, n, d):
     return total
 
 def removable_discontinuity(P, Q):
-    f = pyas_algebra.simplify(P/Q)
+    f = algebra.simplify(P/Q)
     holes = []
-    for r in pyas_algebra.solve_equation(Q, 0):
+    for r in algebra.solve_equation(Q, 0):
         if P.subs(x,r) == 0:
             holes.append((r, limit(f, r)))
     return f, holes
@@ -226,19 +224,19 @@ def right_sum(f, a, b, n):
     return sum(f.subs(x, a + (i+1)*dx) * dx for i in range(n))
 
 def root_polynomial(P):
-    return pyas_algebra.solve_equation(P, 0)
+    return algebra.solve_equation(P, 0)
 
 def root_initial_value(P, x0):
-    return pyas_algebra.n_solutions(P, 0, x0)
+    return algebra.n_solutions(P, 0, x0)
 
-def root_interval(P, a, b, tolerance=1e-6, max_iterations=100):
+def root_interval(P, a, b, tolerance, max_iterations):
     f_a, f_b = float(P.subs(x, a)), float(P.subs(x, b))
     if f_a * f_b > 0:
         raise ValueError("f(a) and f(b) must have opposite signs")
     for _ in range(max_iterations):
         c = (a + b) / 2
         f_c = float(P.subs(x, c))
-        if pyas_math.absolute_value(f_c) < tolerance or pyas_math.absolute_value(b - a) < tolerance:
+        if functions.absolute_value(f_c) < tolerance or functions.absolute_value(b - a) < tolerance:
             return c
         if f_a * f_c < 0:
             b, f_b = c, f_c
@@ -270,18 +268,18 @@ def trapezoid_sum(f, a, b, n):
     dx = (b - a) / n
     return dx * (0.5*f.subs(x,a) + sum(f.subs(x,a+i*dx) for i in range(1,n)) + 0.5*f.subs(x,b))
 
-def trig_expand(expr):
-    return sp.expand_trig(expr)
+def trig_expand(expression):
+    return sp.expand_trig(expression)
 
-def trig_combine(expr):
-    return sp.trigsimp(sp.expand_trig(expr))
+def trig_combine(expression):
+    return sp.trigsimp(sp.expand_trig(expression))
 
-def trig_simplify(expr):
-    return sp.trigsimp(expr)
+def trig_simplify(expression):
+    return sp.trigsimp(expression)
 
 def turning_point(f):
     f_prime = derivative_single_variable(f, 1)
-    critical_points = pyas_algebra.solve_equation(f_prime, 0)
+    critical_points = algebra.solve_equation(f_prime, 0)
     f_double_prime = derivative_single_variable(f_prime, 1)
     points = []
     for c_p in critical_points:
