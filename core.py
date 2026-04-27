@@ -1,4 +1,4 @@
-version = "1.1.19"
+version = "1.2.5"
 import inspect
 import sympy as sp
 import math
