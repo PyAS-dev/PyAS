@@ -1,35 +1,43 @@
 import sympy as sp
 import functions
+import algebra
+
+x, y = sp.symbols('x, y')
 
 # ======== Functions ========
 
 def apply_matrix(M, P):
-    # Case 1: 2D point, 2×2 matrix
+    P = sp.Matrix(P)
+    
     if P.rows == 2 and M.shape == (2, 2):
         return M * P
 
-    # Case 2: 2D point, 3×3 matrix (homogeneous)
     if P.rows == 2 and M.shape == (3, 3):
         homogenus = sp.Matrix([P[0], P[1], 1])
-        x, y, z = M * homogenus
-        return sp.Matrix([x/z, y/z])
+        result = M * homogenus
 
-    # Case 3: 3D point, 3×3 matrix
+        x, y, z = result
+        if z == 0:
+            raise ValueError("Point mapped to infinity (z = 0)")
+
+        return sp.Matrix([x / z, y / z])
+
     if P.rows == 3 and M.shape == (3, 3):
         return M * P
 
-    # Case 4: 3D point, 2×2 matrix → extend to 3×3
     if P.rows == 3 and M.shape == (2, 2):
-        a, c = M[0, 0], M[0, 1]
-        b, d = M[1, 0], M[1, 1]
+        a, b = M[0, 0], M[0, 1]
+        c, d = M[1, 0], M[1, 1]
+
         N = sp.Matrix([
-            [a, c, 0],
-            [b, d, 0],
+            [a, b, 0],
+            [c, d, 0],
             [0, 0, 1]
         ])
+
         return N * P
-    else:
-        return "Unsupported matrix/point size combination"
+
+    raise ValueError("Unsupported matrix/point size combination")
 
 def det(M):
     return M.det()
@@ -42,6 +50,10 @@ def identity_matrix(n):
 
 def invert(M):
     return M.inv()
+
+def invert_function(f):
+    inverse = algebra.solve_equation(y, f, x)
+    return inverse
 
 def rank(M):
     return M.rank()
@@ -70,10 +82,3 @@ def unit_vector(x, y):
 
 def vector(x, y):
     return sp.Matrix([x, y])
-
-FUNCTIONS = {apply_matrix: "apply_matrix", det: "det", dimension: "dimension",
-             identity_matrix: "identity_matrix", invert: "invert", rank: "rank",
-             perpendicular_vector: "perpendicular_vector", rref: "rref", transpose: "transpose",
-             unit_perpendicular_vector: "unit_perpendicular_vector", unit_vector: "unit_vector",
-             vector: "vector"
-             }
