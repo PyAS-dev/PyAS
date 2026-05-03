@@ -7,37 +7,39 @@ x, y = sp.symbols('x y')
 # Algebra Operations
 # -----------------------------
 
-def common_denominator(P1, Q1, P2, Q2):
-    """Return the common denominator of P1/Q1 and P2/Q2"""
-    return sp.lcm(Q1, Q2)
+def common_denominator(f, g):
+    f = sp.fraction(f)
+    g = sp.fraction(g)
+    return sp.lcm(f[1], g[1])
 
-def complete_square(b, c):
-    """Return completed square of x^2 + bx + c"""
-    return sp.simplify((x + b/2)**2 + (c - b**2/4))
+def complete_square(P):
+    P = list(sp.Poly(P, x).all_coeffs())
+    a = P[0]
+    b = P[1]
+    c = P[2]
+    return sp.simplify(a*(x + b/(2*a))**2 + (c - b**2/(4*a)))
 
 def vector_cross_product(u, v):
-    """Return cross product of 3D vectors u and v"""
     u = sp.Matrix(u)
     v = sp.Matrix(v)
     return u.cross(v)
 
-def complex_solutions(left, right):
-    """Solve a single complex equation l = r"""
+def complex_solutions(left, right, variable):
     equation = sp.Eq(left, right)
-    return sp.solve(equation, x)
+    return sp.solve(equation, variable)
 
-def complex_solutions_system(left1, right1, left2, right2):
-    """Solve a system of complex equations"""
-    equation1 = sp.Eq(left1, right1)
-    equation2 = sp.Eq(left2, right2)
-    return sp.solve((equation1, equation2), (x, y))
+def complex_solutions_system(*equations, variables):
+    variables_ = list(variables)
+    sides = equations
+    if len(sides) % 2 != 0:
+        raise ValueError("You must pass left/right pairs")
+    equations = [sp.Eq(sides[i], sides[i + 1]) for i in range(0, len(sides), 2)]
+    return sp.solve(equations, variables)
 
 def division_integer(a, b):
-    """Integer division"""
     return a // b
 
 def division_polynomial(P, Q):
-    """Polynomial division"""
     quotient, remainder = sp.div(P, Q)
     return quotient, remainder
 
@@ -64,8 +66,8 @@ def factorise(expression):
 def from_base(n_string, base):
     return int(n_string, base)
 
-def gcd(*numbers):
-    return sp.gcd(list(numbers))
+def gcd(*expressions):
+    return sp.gcd(list(expressions))
 
 def irrational_factor(expression):
     return "Did you really think factoring is simple? https://en.wikipedia.org/wiki/Field_extension"
@@ -79,14 +81,20 @@ def is_factored(expression):
 def is_prime(n):
     return sp.isprime(n)
 
-def lcm(*numbers):
-    return abs(sp.lcm(list(numbers)))
+def lcm(*expressions):
+    return sp.lcm(list(expressions))
 
 def maximum(*numbers):
     return sp.Max(numbers)
 
+def maximum_function(f, variable):
+    return sp.maximum(f, variable)
+
 def minimum(*numbers):
     return sp.Min(numbers)
+
+def minimum_function(f, variable):
+    return sp.minimum(f, variable)
 
 def mod_number(a, n):
     return a % n
@@ -97,11 +105,18 @@ def mod_polynomial(P, Q):
 def next_prime(n):
     return sp.nextprime(n)
 
-def n_solutions(left, right, start):
+def n_solve_equation(left, right, start, variable):
     equation = sp.Eq(left, right)
     if start is not None:
-        return sp.nsolve(equation, x, start)
-    return sp.nsolve(equation, x)
+        return sp.nsolve(equation, variable, start)
+    
+def n_solve_equation_system(*equations, variables):
+    variables_ = list(variables)
+    sides = equations
+    if len(sides) % 2 != 0:
+        raise ValueError("You must pass left/right pairs")
+    equations = [sp.Eq(sides[i], sides[i + 1]) for i in range(0, len(sides), 2)]
+    return sp.N(sp.solve(equations, variables))
 
 def previous_prime(n):
     return sp.prevprime(n)
@@ -112,9 +127,17 @@ def prime_factors(n):
 def simplify(expression):
     return sp.simplify(expression)
 
-def solve_equation(left, right):
+def solve_equation(left, right, variable):
     equation = sp.Eq(left, right)
-    return sp.solve(equation, x)
+    return sp.solve(equation, variable)
+
+def solve_equation_system(*equations, variables):
+    variables_ = list(variables)
+    sides = equations
+    if len(sides) % 2 != 0:
+        raise ValueError("You must pass left/right pairs")
+    equations = [sp.Eq(sides[i], sides[i + 1]) for i in range(0, len(sides), 2)]
+    return sp.solve(equations, variables)
 
 def solve_inequality(expression):
     return sp.solve_univariate_inequality(expression, x)
@@ -126,19 +149,3 @@ def to_base(n, base):
         digits.append(number % base)
         number //= base
     return digits[::-1] if digits else [0]
-
-# === MENU SETUP ===
-
-FUNCTIONS = {
-    "common_denominator": common_denominator, "complete_square": complete_square,
-    "vector_cross_product": vector_cross_product, "complex_solutions": complex_solutions,
-    "complex_solutions_system": complex_solutions_system, "division_integer": division_integer,
-    "division_polynomial": division_polynomial, "divisors_count": divisors_count,
-    "divisors_list": divisors_list, "sigma": sigma, "vector_dot_product": vector_dot_product,
-    "expand": expand, "factorise": factorise, "from_base": from_base, "gcd": gcd,
-    "irrational_factor": irrational_factor, "is_factored": is_factored, "is_prime": is_prime, "lcm": lcm,
-    "maximum": maximum, "minimum": minimum, "mod_number": mod_number, "mod_polynomial": mod_polynomial,
-    "next_prime": next_prime, "n_solutions": n_solutions, "previous_prime": previous_prime,
-    "prime_factors": prime_factors, "simplify": simplify, "solve_equation": solve_equation,
-    "solve_inequality": solve_inequality, "to_base": to_base
-}
