@@ -16,7 +16,7 @@ def cbrt(x):
 def nroot(x, n):
     return x**sp.Rational(1, n)
 
-def absolute_value(x):
+def AbsoluteValue(x):
     return sp.Piecewise(
         (x, x >= 0),
         (-x, True)
@@ -35,10 +35,10 @@ def arg(z):
 def conjugate(z):
     return sp.conjugate(z)
 
-def real(z):
+def Re(z):
     return sp.re(z)
 
-def imaginary(z):
+def Im(z):
     return sp.im(z)
 
 def floor(x):
@@ -47,10 +47,10 @@ def floor(x):
 def ceil(x):
     return sp.ceiling(x)
 
-def nearest_integer(x):
+def NearestInteger(x):
     return floor(x + sp.Rational(1, 2))
 
-def fractional_part(x):
+def FractionalPart(x):
     return x - floor(x)
 
 # === LOGARITHMIC AND EXPONENTIAL ===
@@ -144,11 +144,11 @@ def gamma(x):
     t = sp.symbols('t')
     return calculus.definite_integral(t**(x - 1) * exp(-t), 0, sp.oo, t)
 
-def lower_incomplete_gamma(a, x):
+def LowerIncompleteGamma(a, x):
     t = sp.symbols('t')
     return calculus.definite_integral(t**(a - 1) * exp(-t), 0, x, t)
 
-def gamma_regularized(a, x):
+def GammaRegularized(a, x):
     t = sp.symbols('t')
     a = sp.sympify(a)
     x = sp.sympify(x)
@@ -160,13 +160,13 @@ def psi(x):
 def beta(a, b):
     return (gamma(a)*gamma(b))/gamma(a + b)
 
-def incomplete_beta(a, b, x):
+def IncompleteBeta(a, b, x):
     t = sp.symbols('t')
     a = sp.sympify(a)
     b = sp.sympify(b)
     return calculus.definite_integral(t**(a - 1) * (1 - t)**(b - 1), 0, x, t)
 
-def beta_regularized(a, b, x):
+def BetaRegularized(a, b, x):
     t = sp.symbols('t')
     return incomplete_beta(a, b, x)/beta(a, b)
 
@@ -180,15 +180,15 @@ def nPr(n, r):
 def nCr(n, r):
     return sp.factorial(n)/(sp.factorial(r)*sp.factorial(n - r))
 
-def sin_integral(x):
+def SinIntegral(x):
     t = sp.symbols('t')
     return calculus.definite_integral(sin(t)/t, 0, x, t)
 
-def cos_integral(x):
+def CosIntegral(x):
     t = sp.symbols('t')
     return -calculus.definite_integral(cos(t)/t, x, sp.oo, t)
 
-def exp_integral(x):
+def ExpIntegral(x):
     t = sp.symbols('t')
     return calculus.definite_integral(exp(t)/t, -sp.oo, x, t)
 
@@ -197,7 +197,7 @@ def zeta(s):
     n = sp.symbols('n', integer=True, positive=True)
     return sp.summation(1/n**s, (n, 1, sp.oo))
 
-def dirac(x):
+def DiracDelta(x):
     return sp.Piecewise(
         (0, x != 0), 
         (sp.oo, True)
