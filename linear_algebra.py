@@ -52,7 +52,7 @@ def inv(M):
     return M.inv()
 
 def InverseFunction(f):
-    inverse = algebra.solve_equation(y, f, x)
+    inverse = algebra.SolveEquation(y, f, x)
     return inverse
 
 def rank(M):
@@ -74,7 +74,7 @@ def UnitPerpendicularVector(a, b):
     return unit_perpendicular_vector
 
 def UnitVector(x, y):
-    length = pyas_math.sqrt(x**2 + y**2)
+    length = functions.sqrt(x**2 + y**2)
     if length == 0:
         return "Zero vector has no direction."
     else:
