@@ -4,7 +4,7 @@ import algebra
 x, y, z, t = sp.symbols('x, y, z, t')
 
 def AsymptoteConic(expression):
-    def quadratic_part(expression, vars):
+    def QuadraticPart(expression, vars):
         polynomial = sp.Poly(expression, *vars)
         quadratic = 0
 
@@ -39,7 +39,7 @@ def AsymptoteConic(expression):
 def AsymptoteFunction(P, Q):
     f = algebra.simplify(P / Q)
     result = {}
-    result["vertical"] = sp.solve(Q, x)
+    result["vertical"] = algebra.SolveEquation(Q, 0, x)
     result["horizontal"] = (
         sp.limit(f, x, sp.oo),
         sp.limit(f, x, -sp.oo)
@@ -55,7 +55,7 @@ def ImplicitAsymptote(f):
     asymptotes = []
     expression = f.subs(y, m*x)
     leading = sp.limit(expression / x**sp.degree(expression, x), x, sp.oo)
-    m_solutions = algebra.solve_equation(leading, 0, m)
+    m_solutions = algebra.SolveEquation(leading, 0, m)
     for m_value in m_solutions:
         expression_m_b = f.subs(y, m_value*x + b).expand()
         leading_b = sp.limit(
@@ -63,11 +63,11 @@ def ImplicitAsymptote(f):
             x, sp.oo
         )
 
-        b_solutions = algebra.solve_equation(leading_b, 0, b)
+        b_solutions = algebra.SolveEquation(leading_b, 0, b)
         for b_value in b_solutions:
             asymptotes.append(sp.Eq(y, m_value*x + b_value))
             
-    x_candidates = algebra.solve_equation(f, 0, x)
+    x_candidates = algebra.SolveEquation(f, 0, x)
 
     for x_c in x_candidates:
         try:
@@ -91,10 +91,10 @@ def CoefficientsConic(f):
     return sp.Poly(f, x, y).all_coeffs()
 
 def CurvatureFunction(f, a):
-    return functions.absolute_value(sp.diff(f, x, 2).subs(x, a)) / ((1 + sp.diff(f, x)**2)**sp.Rational(3,2)).subs(x, a)
+    return functions.AbsoluteValue(sp.diff(f, x, 2).subs(x, a)) / ((1 + sp.diff(f, x)**2)**sp.Rational(3,2)).subs(x, a)
 
 def CurvatureParametric(x_t, y_t, a):
-    numerator = functions.absolute_value(sp.diff(x_t,t)*sp.diff(y_t,t,2).subs(t, a) - sp.diff(y_t,t)*sp.diff(x_t,t,2)).subs(t, a)
+    numerator = functions.AbsoluteValue(sp.diff(x_t,t)*sp.diff(y_t,t,2).subs(t, a) - sp.diff(y_t,t)*sp.diff(x_t,t,2)).subs(t, a)
     denominator = ((sp.diff(x_t,t)**2).subs(t, a) + (sp.diff(y_t,t)**2)**sp.Rational(3,2)).subs(t, a)
     return numerator / denominator
 
@@ -129,15 +129,15 @@ def FactorsPolynomial(P):
     return sp.factor_list(P)
 
 def FactorsInteger(n):
-    return algebra.prime_factors(n)
+    return algebra.PrimeFactors(n)
 
 def ImplicitDerivative(f):
-    f_x = partial_derivative(f, x, 1)
-    f_y = partial_derivative(f, y, 1)
+    f_x = PartialDerivative(f, x, 1)
+    f_y = PartialDerivative(f, y, 1)
     return -f_x / f_y
 
 def InflectionPoint(P):
-    candidates = algebra.solve_equation(derivative_single_variable(P, 2), 0, x)
+    candidates = algebra.SolveEquation(DerivativeSingleVariable(P, 2), 0, x)
     points = [(x0, P.subs(x,x0)) for x0 in candidates]
     return points
 
@@ -148,7 +148,7 @@ def DefiniteIntegral(f, a, b, variable):
     return sp.integrate(f, (variable, a, b))
 
 def IntegralBetween(f, g, a, b, variable):
-    return definite_integral(f - g, a, b, variable)
+    return DefiniteIntegral(f - g, a, b, variable)
 
 def IsVertexForm(f):
     coefficients = sp.Poly(f, x).all_coeffs()
@@ -193,7 +193,7 @@ def LowerSum(f, a, b, n):
     return sum(sp.Min(f.subs(x,a+i*dx), f.subs(x,a+(i+1)*dx)) * dx for i in range(n))
 
 def NIntegral(f, a, b, variable):
-    return sp.N(definite_integral(f, a, b, variable))
+    return sp.N(DefiniteIntegral(f, a, b, variable))
 
 def NormalizeNumber(A):
     a = min(A)
@@ -239,16 +239,16 @@ def numerator(f):
 
 def OsculatingCircle(f, P):
     x0, y0 = P
-    f1 = derivative_single_variable(f, 1)
-    f2 = derivative_single_variable(f, 2)
-    k = functions.absolute_value(f2)/(1+f1**2)**sp.Rational(3,2)
+    f1 = DerivativeSingleVariable(f, 1)
+    f2 = DerivativeSingleVariable(f, 2)
+    k = functions.AbsoluteValue(f2)/(1+f1**2)**sp.Rational(3,2)
     R = 1/k.subs(x,x0)
     N = sp.Matrix([-f1.subs(x,x0),1]) / functions.sqrt(1+f1.subs(x,x0)**2)
     C = sp.Matrix([x0,y0]) + R*N
     return (x-C[0])**2 + (y-C[1])**2 - R**2
 
 def ParametricDerivative(x_t, y_t):
-    return derivative_single_variable(y_t, 1) / derivative_single_variable(x_t, 1)
+    return DerivativeSingleVariable(y_t, 1) / DerivativeSingleVariable(x_t, 1)
 
 def PartialFractions(f, variable):
     return sp.apart(f, variable)
@@ -299,7 +299,7 @@ def RemovableDiscontinuity(P, Q):
     f = algebra.simplify(P / Q)
     holes = []
     
-    for r in algebra.solve_equation(Q, 0, x):
+    for r in algebra.SolveEquation(Q, 0, x):
         if P.subs(x, r) == 0:
             hole_y = limit(f, x, r)
             holes.append((r, hole_y))
@@ -311,10 +311,10 @@ def RightSum(f, a, b, n):
     return sum(f.subs(x, a + (i+1)*dx) * dx for i in range(n))
 
 def zeros(P):
-    return algebra.solve_equation(P, 0, x)
+    return algebra.SolveEquation(P, 0, x)
 
 def ZerosInitialValue(P, x0):
-    return algebra.n_solutions(P, 0, x0, x)
+    return algebra.NSolutions(P, 0, x0, x)
 
 def ZerosInterval(P, a, b, tolerance, max_iterations):
     f_a, f_b = float(P.subs(x, a)), float(P.subs(x, b))
@@ -323,7 +323,7 @@ def ZerosInterval(P, a, b, tolerance, max_iterations):
     for _ in range(max_iterations):
         c = (a + b) / 2
         f_c = float(P.subs(x, c))
-        if functions.absolute_value(f_c) < tolerance or functions.absolute_value(b - a) < tolerance:
+        if functions.AbsoluteValue(f_c) < tolerance or functions.AbsoluteValue(b - a) < tolerance:
             return c
         if f_a * f_c < 0:
             b, f_b = c, f_c
@@ -384,9 +384,9 @@ def TrigSimplify(expression, target):
     return sp.trigsimp(expression).rewrite(target)
 
 def TurningPoint(f):
-    f_prime = derivative_single_variable(f, 1)
-    critical_points = algebra.solve_equation(f_prime, 0, x)
-    f_double_prime = derivative_single_variable(f_prime, 1)
+    f_prime = DerivativeSingleVariable(f, 1)
+    critical_points = algebra.SolveEquation(f_prime, 0, x)
+    f_double_prime = DerivativeSingleVariable(f_prime, 1)
     points = []
     for c_p in critical_points:
         concavity = f_double_prime.subs(x, c_p)
@@ -395,10 +395,10 @@ def TurningPoint(f):
     return points
 
 def TurningPointInterval(f, a, b):
-    f_prime = derivative_single_variable(f, 1)
-    critical = algebra.solve_equation(f_prime, 0, x)
+    f_prime = DerivativeSingleVariable(f, 1)
+    critical = algebra.SolveEquation(f_prime, 0, x)
     critical_points = [p for p in critical if p.is_real and a <= p <= b]
-    f2 = derivative_single_variable(f_prime, 1)
+    f2 = DerivativeSingleVariable(f_prime, 1)
 
     result = []
     for p in critical:
