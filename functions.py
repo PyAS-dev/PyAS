@@ -142,20 +142,20 @@ def arctanh(x):
 
 def gamma(x):
     t = sp.symbols('t')
-    return calculus.definite_integral(t**(x - 1) * exp(-t), 0, sp.oo, t)
+    return calculus.DefiniteIntegral(t**(x - 1) * exp(-t), 0, sp.oo, t)
 
 def LowerIncompleteGamma(a, x):
     t = sp.symbols('t')
-    return calculus.definite_integral(t**(a - 1) * exp(-t), 0, x, t)
+    return calculus.DefiniteIntegral(t**(a - 1) * exp(-t), 0, x, t)
 
 def GammaRegularized(a, x):
     t = sp.symbols('t')
     a = sp.sympify(a)
     x = sp.sympify(x)
-    return lower_incomplete_gamma(a, x)/gamma(a)
+    return LowerIncompleteGamma(a, x)/gamma(a)
 
 def psi(x):
-    return calculus.derivative_single_variable(gamma(x), 1)/gamma(x)
+    return calculus.DerivativeSingleVariable(gamma(x), 1)/gamma(x)
 
 def beta(a, b):
     return (gamma(a)*gamma(b))/gamma(a + b)
@@ -164,15 +164,15 @@ def IncompleteBeta(a, b, x):
     t = sp.symbols('t')
     a = sp.sympify(a)
     b = sp.sympify(b)
-    return calculus.definite_integral(t**(a - 1) * (1 - t)**(b - 1), 0, x, t)
+    return calculus.DefiniteIntegral(t**(a - 1) * (1 - t)**(b - 1), 0, x, t)
 
 def BetaRegularized(a, b, x):
     t = sp.symbols('t')
-    return incomplete_beta(a, b, x)/beta(a, b)
+    return IncompleteBeta(a, b, x)/beta(a, b)
 
 def erf(x):
     t = sp.symbols('t')
-    return 2/sqrt(sp.pi) * calculus.definite_integral(exp(-t**2), 0, x, t)
+    return 2/sqrt(sp.pi) * calculus.DefiniteIntegral(exp(-t**2), 0, x, t)
 
 def nPr(n, r):
     return sp.factorial(n)/sp.factorial(n - r)
@@ -182,15 +182,15 @@ def nCr(n, r):
 
 def SinIntegral(x):
     t = sp.symbols('t')
-    return calculus.definite_integral(sin(t)/t, 0, x, t)
+    return calculus.DefiniteIntegral(sin(t)/t, 0, x, t)
 
 def CosIntegral(x):
     t = sp.symbols('t')
-    return -calculus.definite_integral(cos(t)/t, x, sp.oo, t)
+    return -calculus.DefiniteIntegral(cos(t)/t, x, sp.oo, t)
 
 def ExpIntegral(x):
     t = sp.symbols('t')
-    return calculus.definite_integral(exp(t)/t, -sp.oo, x, t)
+    return calculus.DefiniteIntegral(exp(t)/t, -sp.oo, x, t)
 
 def zeta(s):
     s = sp.sympify(s)
