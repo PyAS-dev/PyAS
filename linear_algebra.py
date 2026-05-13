@@ -6,7 +6,7 @@ x, y = sp.symbols('x, y')
 
 # ======== Functions ========
 
-def apply_matrix(M, P):
+def ApplyMatrix(M, P):
     P = sp.Matrix(P)
     
     if P.rows == 2 and M.shape == (2, 2):
@@ -42,38 +42,38 @@ def apply_matrix(M, P):
 def det(M):
     return M.det()
 
-def dimension(M):
+def dim(M):
     return M.shape
 
-def identity_matrix(n):
+def IdentityMatrix(n):
     return sp.eye(n)
 
-def invert(M):
+def inv(M):
     return M.inv()
 
-def invert_function(f):
+def InverseFunction(f):
     inverse = algebra.solve_equation(y, f, x)
     return inverse
 
 def rank(M):
     return M.rank()
 
-def perpendicular_vector(v):
+def PerpendicularVector(v):
     perpendicular = sp.Matrix([-v[1], v[0]])
     return perpendicular
 
 def rref(M):
     return M.rref()
 
-def transpose(M):
+def T(M):
     return M.T
 
-def unit_perpendicular_vector(a, b):
+def UnitPerpendicularVector(a, b):
     v = sp.Matrix([a, b])
-    unit_perpendicular_vector = sp.Matrix([-v[1], v[0]]) / pyas_math.sqrt(v[0]**2 + v[1]**2)
+    unit_perpendicular_vector = sp.Matrix([-v[1], v[0]]) / functions.sqrt(v[0]**2 + v[1]**2)
     return unit_perpendicular_vector
 
-def unit_vector(x, y):
+def UnitVector(x, y):
     length = pyas_math.sqrt(x**2 + y**2)
     if length == 0:
         return "Zero vector has no direction."
