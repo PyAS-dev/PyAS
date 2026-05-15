@@ -1,5 +1,4 @@
 import sympy as sp
-import math
 
 x, y = sp.symbols('x y')
 
@@ -61,7 +60,7 @@ def IrrationalFactor(expression):
     return "Did you really think factoring is simple? https://en.wikipedia.org/wiki/Field_extension"
 
 def IsFactored(expression):
-    if expression == factorise(expression):
+    if expression == factor(expression):
         return True
     else:
         return False
