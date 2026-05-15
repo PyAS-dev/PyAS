@@ -24,7 +24,7 @@ def AsymptoteConic(expression):
     h, k = critical[0][x], critical[0][y]
     X, Y = sp.symbols('X Y')
     shifted = expression.subs({x: X + h, y: Y + k}).expand()
-    quadratic = quadratic_part(shifted, (X, Y))
+    quadratic = QuadraticPart(shifted, (X, Y))
     factors = sp.factor(quadratic)
     if factors.is_Mul:
         factor_list = factors.args
@@ -171,7 +171,7 @@ def IterationList(f, x0, n, variable):
     sequence = [x0]
     x_i = x0
     for _ in range(n):
-        x_i = f.subs(x, x_i)
+        x_i = f.subs(variable, x_i)
         sequence.append(x_i)
     return sequence
 
@@ -314,7 +314,7 @@ def zeros(P):
     return algebra.SolveEquation(P, 0, x)
 
 def ZerosInitialValue(P, x0):
-    return algebra.NSolutions(P, 0, x0, x)
+    return algebra.NSolveEquation(P, 0, x0, x)
 
 def ZerosInterval(P, a, b, tolerance, max_iterations):
     f_a, f_b = float(P.subs(x, a)), float(P.subs(x, b))
