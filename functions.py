@@ -149,7 +149,6 @@ def LowerIncompleteGamma(a, x):
     return calculus.DefiniteIntegral(t**(a - 1) * exp(-t), 0, x, t)
 
 def GammaRegularized(a, x):
-    t = sp.symbols('t')
     a = sp.sympify(a)
     x = sp.sympify(x)
     return LowerIncompleteGamma(a, x)/gamma(a)
@@ -167,7 +166,6 @@ def IncompleteBeta(a, b, x):
     return calculus.DefiniteIntegral(t**(a - 1) * (1 - t)**(b - 1), 0, x, t)
 
 def BetaRegularized(a, b, x):
-    t = sp.symbols('t')
     return IncompleteBeta(a, b, x)/beta(a, b)
 
 def erf(x):
