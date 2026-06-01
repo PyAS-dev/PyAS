@@ -45,7 +45,7 @@ def det(M):
 def dim(M):
     return M.shape
 
-def IdentityMatrix(n):
+def I(n):
     return sp.eye(n)
 
 def inv(M):
