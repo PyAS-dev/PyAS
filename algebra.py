@@ -97,13 +97,16 @@ def NSolveEquation(left, right, start, variable):
     if start is not None:
         return sp.nsolve(equation, variable, start)
     
-def NSolveEquationSystem(*equations, variables):
-    variables_ = list(variables)
-    sides = equations
-    if len(sides) % 2 != 0:
-        raise ValueError("You must pass left/right pairs")
-    equations = [sp.Eq(sides[i], sides[i + 1]) for i in range(0, len(sides), 2)]
-    return sp.N(sp.solve(equations, variables))
+def NSolveEquationSystem(equations, variables):
+    if len(equations) % 2 != 0:
+        raise ValueError("Equations must be in left/right pairs (even number of items).")
+    
+    eqs = [
+        sp.Eq(equations[i], equations[i + 1])
+        for i in range(0, len(equations), 2)
+    ]
+    
+    return sp.N(sp.solve(eqs, variables))
 
 def PreviousPrime(n):
     return sp.prevprime(n)
