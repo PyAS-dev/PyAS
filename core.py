@@ -1,4 +1,4 @@
-version = "1.2.21"
+version = "1.3.10"
 import inspect
 import sympy as sp
 import math
@@ -16,8 +16,7 @@ FUNCTIONS = {}
 
 def register_module_FUNCTIONS(module):
     for name, object in inspect.getmembers(module):
-        if inspect.isfunction(object) and not name.startswith("_"):
-            FUNCTIONS[name] = object
+        FUNCTIONS[name] = object
 
 # register FUNCTIONS from all modules
 register_module_FUNCTIONS(algebra)
@@ -26,7 +25,7 @@ register_module_FUNCTIONS(calculus)
 register_module_FUNCTIONS(linear_algebra)
 
 # -----------------------------
-# Parser: converts string to functiontion + arguments
+# Parser: converts string to function + arguments
 # -----------------------------
 
 def split_arguments(argument_string):
