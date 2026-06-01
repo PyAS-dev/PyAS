@@ -110,7 +110,7 @@ def CurvatureVectorParametric(x_t, y_t, a):
     return (numerator/denominator) * sp.Matrix([-y_prime, x_prime])
 
 def curve(x_t, y_t, variable, a, b):
-    return (x_t, y_t, (variable, a, b))
+    return sp.Curve((x_t, y_t), (variable, a, b))
 
 def degree(P, variable):
     return sp.degree(P, variable)
@@ -141,7 +141,7 @@ def InflectionPoint(P):
     points = [(x0, P.subs(x,x0)) for x0 in candidates]
     return points
 
-def Integral(f, variable):
+def integral(f, variable):
     return sp.integrate(f, variable)
 
 def DefiniteIntegral(f, a, b, variable):
@@ -161,7 +161,7 @@ def IsVertexForm(f):
     else:
         return False
 
-def Iteration(f, x0, n, variable):
+def iteration(f, x0, n, variable):
     x_i = x0
     for _ in range(n):
         x_i = f.subs(variable, x_i)
