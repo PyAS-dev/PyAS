@@ -13,7 +13,7 @@ def sqrt(x):
 def cbrt(x):
     return x**sp.Rational(1, 3)
 
-def nroot(x, n):
+def NRoot(x, n):
     return x**sp.Rational(1, n)
 
 def AbsoluteValue(x):
@@ -50,7 +50,7 @@ def ceil(x):
 def NearestInteger(x):
     return floor(x + sp.Rational(1, 2))
 
-def FractionalPart(x):
+def frac(x):
     return x - floor(x)
 
 # === LOGARITHMIC AND EXPONENTIAL ===
@@ -148,7 +148,7 @@ def LowerIncompleteGamma(a, x):
     t = sp.symbols('t')
     return calculus.DefiniteIntegral(t**(a - 1) * exp(-t), 0, x, t)
 
-def GammaRegularized(a, x):
+def RegularizedGamma(a, x):
     a = sp.sympify(a)
     x = sp.sympify(x)
     return LowerIncompleteGamma(a, x)/gamma(a)
@@ -178,19 +178,19 @@ def nPr(n, r):
 def nCr(n, r):
     return sp.factorial(n)/(sp.factorial(r)*sp.factorial(n - r))
 
-def SinIntegral(x):
+def Si(x):
     t = sp.symbols('t')
     return calculus.DefiniteIntegral(sin(t)/t, 0, x, t)
 
-def CosIntegral(x):
+def Ci(x):
     t = sp.symbols('t')
     return -calculus.DefiniteIntegral(cos(t)/t, x, sp.oo, t)
 
-def ExpIntegral(x):
+def Ei(x):
     t = sp.symbols('t')
     return calculus.DefiniteIntegral(exp(t)/t, -sp.oo, x, t)
 
-def zeta(s):
+def RiemannZeta(s):
     s = sp.sympify(s)
     n = sp.symbols('n', integer=True, positive=True)
     return sp.summation(1/n**s, (n, 1, sp.oo))
