@@ -165,7 +165,7 @@ def IncompleteBeta(a, b, x):
     b = sp.sympify(b)
     return calculus.DefiniteIntegral(t**(a - 1) * (1 - t)**(b - 1), 0, x, t)
 
-def BetaRegularized(a, b, x):
+def RegularizedBeta(a, b, x):
     return IncompleteBeta(a, b, x)/beta(a, b)
 
 def erf(x):
